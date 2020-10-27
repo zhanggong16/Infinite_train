@@ -3,6 +3,7 @@ package manager
 import (
 	"Infinite_train/pkg/common/utils/tools"
 	"flag"
+	"fmt"
 )
 
 func Main(versionInfo *tools.VersionInfo) {
@@ -17,6 +18,7 @@ func Main(versionInfo *tools.VersionInfo) {
 		tools.ShowVersion(versionInfo, banner)
 		return
 	}
+	fmt.Printf("start...")
 
 
 	return
