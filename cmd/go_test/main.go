@@ -6,6 +6,10 @@ import (
 	"time"
 )
 
+// interface 只能是指针类型的实例,new(GoProgrammer) or &GoProgrammer{}
+// 空接口可以表达任何类型，通过断言可以将空接口转换为定制类型 v, ok := p.(int)
+
+
 func returnMultiValues() (int, int) {
 	return rand.Intn(10), rand.Intn(20)
 }
@@ -38,19 +42,30 @@ func (e *Employee) String2() string {
 	return fmt.Sprintf("222 Id [%s], Name [%s], Age [%d]", e.Id, e.Name, e.Age)
 }
 
+type Code string
 
 type Programmer interface {
-	WriteHelloWorld() string
+	WriteHelloWorld() Code
+	ReadHelloWorld() Code
 }
 
 type GoProgrammer struct {
-	Name	string
 }
 
-func (g *GoProgrammer) WriteHelloWorld() string {
-	g.Name = "zhg"
-	s := fmt.Sprintf("hello world %s", g.Name)
-	return s
+func (g *GoProgrammer) WriteHelloWorld() Code {
+	return "golang: hello world"
+}
+
+type JavaProgrammer struct {
+}
+
+func (j *JavaProgrammer) WriteHelloWorld() Code {
+	return "java: hello world"
+}
+
+
+func WriteFirstProgram(p Programmer) {
+	fmt.Printf("%T, %v\n", p, p.WriteHelloWorld())
 }
 
 type IntConv func(op int) int
@@ -92,9 +107,47 @@ func (d *Dog) Speak() {
 	fmt.Println("Wang")
 }
 
+// * &的区别
+type Rect struct {
+	Width 	int
+	Height	int
+}
+
+func (r *Rect) size() int {
+	return r.Height * r.Width
+}
+
+func EmptyInterface(p interface{}) {
+	switch v := p.(type) {
+	case int:
+		fmt.Println("Integer: ", v)
+	case string:
+		fmt.Println("String: ", v)
+	default:
+		fmt.Println("Unknow Type")
+	}
+
+	/*if i, ok := p.(int); ok {
+		fmt.Println("Integer: ", i)
+	} else if s, ok := p.(string); ok {
+		fmt.Println("String: ", s)
+	} else {
+		fmt.Println("Unknow Type")
+	}
+	return*/
+}
+
 func main() {
-	dog := new(Dog)
-	dog.SpeakTo("zhg")
+	//EmptyInterface("10")
+
+	/*r := &Rect{Width: 100, Height: 100}
+	fmt.Println(r.size())*/
+
+	goProg := new(GoProgrammer)
+	javaProg := new(JavaProgrammer)
+
+	WriteFirstProgram(goProg)
+	WriteFirstProgram(javaProg)
 
 	/*ts := timeSpent(slowFunc)
 	fmt.Println(ts(10))*/
