@@ -75,7 +75,7 @@ func TestRotatingFileLog(t *testing.T) {
 		t.Fatal(err)
 	}
 	GlobalSysLoggers = GlobalSysLoggers[:0]
-	GlobalSysLoggers = append(GlobalSysLoggers, New(h, Lfile|Ltime|Llevel))
+	GlobalSysLoggers = append(GlobalSysLoggers, New(h, Lfile|Ltime|Llevel, LogDefaultKey))
 	for _, GlobalSysLoggers := range GlobalSysLoggers {
 		GlobalSysLoggers.SetLevel(LevelTrace)
 	}
