@@ -8,6 +8,7 @@ import (
 	"Infinite_train/pkg/manager/context"
 	"flag"
 	"fmt"
+	"runtime"
 	"time"
 )
 
@@ -42,6 +43,15 @@ func Main(versionInfo *utils.VersionInfo) {
 	}
 	golog.Info("0", banner, "time: ", time.Now())
 	golog.Infof("init config", "Config: %s", conf.String())
+
+	defer func() {
+		if err := recover(); err != nil {
+			stack := make([]byte, 1<<20)
+			stack = stack[:runtime.Stack(stack, true)]
+			golog.Error("0", "manager panic, err: %s, stack: %s", err, stack)
+		}
+	}()
+
 
 
 	return
