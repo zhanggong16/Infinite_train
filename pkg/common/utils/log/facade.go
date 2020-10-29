@@ -1,7 +1,7 @@
 package log
 
 import (
-	"jdcloud.com/dbaas/common/utils/log/golog"
+	"Infinite_train/pkg/common/utils/log/golog"
 	"strings"
 )
 
