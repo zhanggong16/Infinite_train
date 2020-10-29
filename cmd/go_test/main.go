@@ -46,7 +46,6 @@ type Code string
 
 type Programmer interface {
 	WriteHelloWorld() Code
-	ReadHelloWorld() Code
 }
 
 type GoProgrammer struct {
