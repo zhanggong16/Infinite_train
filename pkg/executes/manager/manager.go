@@ -1,11 +1,14 @@
 package manager
 
 import (
+	logCommonConfig "Infinite_train/pkg/common/config"
 	"Infinite_train/pkg/common/utils"
+	"Infinite_train/pkg/common/utils/log/golog"
 	"Infinite_train/pkg/manager/config"
 	"Infinite_train/pkg/manager/context"
 	"flag"
 	"fmt"
+	"time"
 )
 
 func Main(versionInfo *utils.VersionInfo) {
@@ -32,8 +35,14 @@ func Main(versionInfo *utils.VersionInfo) {
 		return
 	}
 	context.Instance.Config = conf
+	err = logCommonConfig.InitConfig(conf.LogConfigs)
+	if err != nil {
+		golog.Error("", err.Error())
+		return
+	}
+	golog.Info("0", banner, "time: ", time.Now())
+	golog.Infof("init config", "Config: %s", conf.String())
 
-	fmt.Printf("xxx %v", context.Instance.Config)
 
 	return
 }

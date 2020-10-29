@@ -2,6 +2,8 @@ package config
 
 import (
 	"Infinite_train/pkg/common/config"
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"time"
 )
@@ -31,26 +33,17 @@ type DataBase struct {
 	MaxOpen  int	`toml:"maxOpen"`
 }
 
-type LogConfig struct {
-	Target          string `toml:"target"`
-	Level           string `toml:"level"`
-	Path            string `toml:"path, omitempty"`
-	RotateMethod    string `toml:"rotate_method, omitempty"`
-	RotateFileSize  uint64 `toml:"rotate_file_size, omitempty"`
-	RotateFileCount uint64 `toml:"rotate_file_count, omitempty"`
-}
-
 type Config struct {
-	WebAddr          string         		`toml:"web_addr"`
-	ManagerConfig    *ManagerCfg    		`toml:"manager"`
-	RPCServer        *RPCServer     		`toml:"rpc_server"`
-	DataBase         *DataBase      		`toml:"database"`
-	LogConfigs       *LogConfig 			`toml:"logs"`
-	RetryConfig      *config.RetryConfig	`toml:"retry"`
-	PollingConfig    *config.PollingConfig	`toml:"polling"`
+	WebAddr          string         				`toml:"web_addr"`
+	ManagerConfig    *ManagerCfg    				`toml:"manager"`
+	RPCServer        *RPCServer     				`toml:"rpc_server"`
+	DataBase         *DataBase      				`toml:"database"`
+	LogConfigs       map[string]*config.LogConfig 	`toml:"logs"`
+	RetryConfig      *config.RetryConfig			`toml:"retry"`
+	PollingConfig    *config.PollingConfig			`toml:"polling"`
 }
 
-
+// func...
 func ParseConfig(file string) (*Config, error) {
 	conf := new(Config)
 	if _, err := toml.DecodeFile(file, &conf); err != nil {
@@ -58,4 +51,17 @@ func ParseConfig(file string) (*Config, error) {
 		return nil, err
 	}
 	return conf, nil
+}
+
+func (conf *Config) String() string {
+	b, err := json.Marshal(*conf)
+	if err != nil {
+		return fmt.Sprintf("\n%+v\n", *conf)
+	}
+	var out bytes.Buffer
+	err = json.Indent(&out, b, "", "    ")
+	if err != nil {
+		return fmt.Sprintf("\n%+v\n", *conf)
+	}
+	return out.String()
 }
