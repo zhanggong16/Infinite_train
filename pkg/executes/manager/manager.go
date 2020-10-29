@@ -42,7 +42,7 @@ func Main(versionInfo *utils.VersionInfo) {
 		return
 	}
 	golog.Info("0", banner, "time: ", time.Now())
-	golog.Infof("0", "Init Config: %s", conf.String())
+	golog.Infof("init config", "Config: %s", conf.String())
 
 	defer func() {
 		if err := recover(); err != nil {
@@ -52,8 +52,7 @@ func Main(versionInfo *utils.VersionInfo) {
 		}
 	}()
 
-
-
+	time.Sleep(1*time.Second)
 
 	return
 }
