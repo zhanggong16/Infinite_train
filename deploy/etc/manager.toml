@@ -1,0 +1,61 @@
+# Infinite train manager config file
+web_addr = ":7001"
+
+[manager]
+ip_prefix = "172."
+region = "cn-north-1"
+admin_roles = ["admin"]
+availability_zones = "az1"
+resource_pool = "general"
+
+[rpc_server]
+address = ":7002"
+codec_timeout = 60
+
+[database]
+account = "xxx"
+password = "xxx"
+ip = "xxx"
+port = 23306
+schema ="xxx"
+charset = "utf8"
+maxIdle = 0
+maxOpen = 0
+
+[logs]
+    [logs.default]
+    target = "file"
+    level = "debug"
+    path = "/var/log/infinite_train/manager.log"
+    rotate_method = "rotate_by_count"
+    rotate_file_size = 314572800
+    rotate_file_count = 30
+
+    [logs.error]
+    target = "file"
+    level = "error"
+    path = "/var/log/infinite_train/manager_error.log"
+    rotate_method = "rotate_by_count"
+    rotate_file_size = 10485760 #1024x1024x10=10M
+    rotate_file_count = 3
+
+[retry]
+retry_count_low = 3
+retry_count_medium = 6
+retry_count_high = 12
+retry_count_large = 30
+retry_count_huge = 50
+retry_count_max = 100
+retry_interval_low = 3
+retry_interval_medium = 6
+retry_interval_high = 15
+
+[polling]
+polling_timeout_low = 10
+polling_timeout_medium = 70
+polling_timeout_high = 150
+polling_timeout_large = 300
+polling_timeout_huge = 1800
+polling_interval_low = 3
+polling_interval_medium = 5
+polling_interval_high = 10
