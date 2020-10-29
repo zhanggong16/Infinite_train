@@ -1,0 +1,2 @@
+# manager start cmd
+./manager -config /etc/manager.toml 2>&1 >> /var/log/infinite_train/manager_stdout.log

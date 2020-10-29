@@ -42,7 +42,7 @@ func Main(versionInfo *utils.VersionInfo) {
 		return
 	}
 	golog.Info("0", banner, "time: ", time.Now())
-	golog.Infof("init config", "Config: %s", conf.String())
+	golog.Infof("0", "Init Config: %s", conf.String())
 
 	defer func() {
 		if err := recover(); err != nil {
