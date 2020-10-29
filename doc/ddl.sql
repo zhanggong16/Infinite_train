@@ -2,8 +2,8 @@
 -- 初始化
 -- ----------------------------
 CREATE TABLE `table1` (
-  `pkid` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `id` varchar(36) NOT NULL COMMENT 'uuid',
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `uuid` varchar(36) NOT NULL,
   `gid` varchar(64) NOT NULL COMMENT '用户id',
   `deleted` tinyint(1) DEFAULT NULL COMMENT '0 未删除，1 已删除',
   `deleted_at` datetime DEFAULT NULL COMMENT '删除时间',
