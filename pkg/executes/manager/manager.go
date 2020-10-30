@@ -4,13 +4,17 @@ import (
 	logCommonConfig "Infinite_train/pkg/common/config"
 	"Infinite_train/pkg/common/utils"
 	"Infinite_train/pkg/common/utils/log/golog"
+	"Infinite_train/pkg/manager/api/restful"
 	"Infinite_train/pkg/manager/config"
 	"Infinite_train/pkg/manager/context"
 	"Infinite_train/pkg/manager/model/bean"
 	"flag"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
+	"os"
+	"os/signal"
 	"runtime"
+	"syscall"
 	"time"
 )
 
@@ -71,13 +75,62 @@ func Main(versionInfo *utils.VersionInfo) {
 	bean.DbEngine, err = utils.CreateOrmEngine(conf.DataBase.Account, conf.DataBase.Password, conf.DataBase.IP,
 		conf.DataBase.Port, conf.DataBase.Schema, conf.DataBase.Charset, conf.DataBase.MaxIdle, conf.DataBase.MaxOpen)
 	if err != nil {
-		golog.Errorx("0", "connect db error:%v\n", err.Error())
+		golog.Errorx("0", "Connect db error:%v\n", err.Error())
 		return
 	}
 	bean.DbEngine.ShowSQL(false)
 	golog.Infof("0", "Init db client successfully!")
 
-	time.Sleep(2 * time.Second)
+	// init interface
+	/*controller.InitControllerLayer()
+	service.InitServiceLayer()*/
+
+	// init restful server
+	server, err := restful.NewServer(conf)
+	if err != nil {
+		golog.Errorx("0", "New restful server occurs error: %s\n", err.Error())
+		return
+	}
+
+	// SIGHUP: reload，终端控制进程结束
+	// SIGINT: ctrl + c
+	// SIGTERM: 结束程序(可以被捕获、阻塞或忽略)
+	// SIGQUIT: 用户发送QUIT字符(Ctrl+/)触发
+	// SIGPIPE: 消息管道损坏(FIFO/Socket通信时，管道未打开而进行写操作)
+	sigs := make(chan os.Signal, 1)
+	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT, syscall.SIGPIPE)
+	go func() {
+		for {
+			sig := <-sigs
+			if sig == syscall.SIGHUP {
+				configNew, err := config.ParseConfig(*cfgFile)
+				if err != nil {
+					golog.Errorf("0", "Parse config file failed!", "signal", sig)
+					return
+				}
+				context.Instance.Config = configNew
+				golog.Info("0", "SIGHUP parse config file successfully!", "signal", sig)
+				golog.Infof("0", "SIGHUP Config: %s", configNew.String())
+			} else if sig == syscall.SIGINT || sig == syscall.SIGTERM || sig == syscall.SIGQUIT {
+				golog.Info("0", "OS order me to quit, so kill myself", "signal", sig)
+				server.Close()
+				//rpc.Close()
+				for _, GlobalSysLogger := range golog.GlobalSysLoggers {
+					GlobalSysLogger.Close()
+				}
+				golog.Close()
+				return
+			} else if sig == syscall.SIGPIPE {
+				golog.Info("0", "Ignore broken pipe signal", "signal", sig)
+			}
+		}
+	}()
+
+	err = server.Run()
+	if err != nil {
+		golog.Errorx("0", "Restful server run occurs error: %s\n", err.Error())
+		return
+	}
 
 	return
 }
