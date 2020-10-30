@@ -1,0 +1,5 @@
+# 加密例子
+echo zhanggong | openssl aes-256-cbc -K 54460A61CFE68A53 -base64 -iv BF1D55D610952164 -A
+
+# 解密例子
+echo UaXKoXjBQ4Qu7FmmtH13ww== | openssl aes-256-cbc -d -K 54460A61CFE68A53 -base64 -iv BF1D55D610952164 -A

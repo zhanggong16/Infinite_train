@@ -21,6 +21,7 @@ schema ="xxx"
 charset = "utf8"
 maxIdle = 0
 maxOpen = 0
+lineValue = "xxx"
 
 [logs]
     [logs.default]

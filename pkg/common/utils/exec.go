@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"errors"
+	"github.com/juju/errors"
 	"os/exec"
 	"strings"
 	"time"

@@ -5,7 +5,7 @@ import (
 	"net"
 )
 
-func GetLocalIPWithoutPrefix() (string, error) {
+func GetLocalIP() (string, error) {
 	address, err := net.InterfaceAddrs()
 	if err != nil {
 		return "", err
