@@ -69,7 +69,6 @@ func Main(versionInfo *utils.VersionInfo) {
 	conf.DataBase.Schema = encryption.Decrypt(conf.DataBase.Schema, iv)*/
 	bean.DbEngine, err = utils.CreateOrmEngine(conf.DataBase.Account, conf.DataBase.Password, conf.DataBase.IP,
 		conf.DataBase.Port, conf.DataBase.Schema, conf.DataBase.Charset, conf.DataBase.MaxIdle, conf.DataBase.MaxOpen)
-	golog.Infof("0", "Init db client %s", err.Error())
 	if err != nil {
 		golog.Errorx("0", "connect db error:%v\n", err.Error())
 		return
