@@ -17,5 +17,6 @@ func CreateOrmEngine(account string, password string, ip string, port int, schem
 		engine.SetMaxOpenConns(maxOpen)
 
 	}
+	golog.Infof("0", "CreateOrmEngine finish")
 	return engine, err
 }
