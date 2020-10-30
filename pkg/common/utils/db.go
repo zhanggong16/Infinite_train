@@ -15,7 +15,6 @@ func CreateOrmEngine(account string, password string, ip string, port int, schem
 	if err == nil {
 		engine.SetMaxIdleConns(maxIdle)
 		engine.SetMaxOpenConns(maxOpen)
-
 	}
 	return engine, err
 }

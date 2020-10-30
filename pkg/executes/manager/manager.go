@@ -9,6 +9,7 @@ import (
 	"Infinite_train/pkg/manager/model/bean"
 	"flag"
 	"fmt"
+	_ "github.com/go-sql-driver/mysql"
 	"runtime"
 	"time"
 )
@@ -76,7 +77,7 @@ func Main(versionInfo *utils.VersionInfo) {
 	bean.DbEngine.ShowSQL(false)
 	golog.Infof("0", "Init db client successfully!")
 
-	time.Sleep(2*time.Second)
+	time.Sleep(2 * time.Second)
 
 	return
 }

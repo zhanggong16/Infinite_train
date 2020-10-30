@@ -1,3 +1,6 @@
+# 调试的例子
+dlv exec "./bin/manager"
+
 # 加密例子
 echo zhanggong | openssl aes-256-cbc -K 54460A61CFE68A53 -base64 -iv BF1D55D610952164 -A
 
