@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"math/rand"
 	"time"
@@ -8,6 +9,9 @@ import (
 
 // interface 只能是指针类型的实例,new(GoProgrammer) or &GoProgrammer{}
 // 空接口可以表达任何类型，通过断言可以将空接口转换为定制类型 v, ok := p.(int)
+
+
+// os.Exit 不会调用defer函数，不会输出调用栈信息
 
 
 func returnMultiValues() (int, int) {
@@ -136,17 +140,59 @@ func EmptyInterface(p interface{}) {
 	return*/
 }
 
+var LessThanTwoError = errors.New("LessThanTwoError")
+var LargerThanHunderdError = errors.New("LargerThanHunderdError")
+
+func GetFib(n int) ([]int, error) {
+
+
+	fibList := []int{1,1}
+	if n < 2 {
+		return nil, LessThanTwoError
+	}
+	if  n > 100 {
+		return nil, LargerThanHunderdError
+	}
+
+	for i:=2; i<n; i++ {
+		fibList = append(fibList, fibList[i-2] + fibList[i-1])
+	}
+	return fibList, nil
+}
+
+
+
+
+
 func main() {
 	//EmptyInterface("10")
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Println("recovered from", err)
+		}
+	}()
+
+	fmt.Println("start")
+	panic(errors.New("wrong"))
+	/*if s, err := GetFib(-1); err != nil {
+		if err == LessThanTwoError {
+			fmt.Println("less")
+		}
+
+		fmt.Println(err.Error())
+	} else {
+		fmt.Println(s)
+	}*/
+
 
 	/*r := &Rect{Width: 100, Height: 100}
 	fmt.Println(r.size())*/
 
-	goProg := new(GoProgrammer)
+	/*goProg := new(GoProgrammer)
 	javaProg := new(JavaProgrammer)
 
 	WriteFirstProgram(goProg)
-	WriteFirstProgram(javaProg)
+	WriteFirstProgram(javaProg)*/
 
 	/*ts := timeSpent(slowFunc)
 	fmt.Println(ts(10))*/

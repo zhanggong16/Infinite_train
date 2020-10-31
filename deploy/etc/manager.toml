@@ -3,7 +3,7 @@ web_addr = ":7001"
 
 [manager]
 ip_prefix = "172."
-region = "cn-north-1"
+region = "beijing-1"
 admin_roles = ["admin"]
 availability_zones = "az1"
 resource_pool = "general"
@@ -21,7 +21,6 @@ schema ="xxx"
 charset = "utf8"
 maxIdle = 0
 maxOpen = 0
-lineValue = "xxx"
 
 [logs]
     [logs.default]

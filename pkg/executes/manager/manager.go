@@ -3,7 +3,9 @@ package manager
 import (
 	logCommonConfig "Infinite_train/pkg/common/config"
 	"Infinite_train/pkg/common/utils"
+	"Infinite_train/pkg/common/utils/linux"
 	"Infinite_train/pkg/common/utils/log/golog"
+	"Infinite_train/pkg/common/utils/mysql"
 	"Infinite_train/pkg/manager/api/restful"
 	"Infinite_train/pkg/manager/config"
 	"Infinite_train/pkg/manager/context"
@@ -50,7 +52,7 @@ func Main(versionInfo *utils.VersionInfo) {
 		fmt.Printf("Parse config file failed!\n")
 		return
 	}
-	localIP, err := utils.GetLocalIP()
+	localIP, err := linux.GetLocalIP()
 	if err != nil {
 		fmt.Printf("Get local IP failed!\n")
 		return
@@ -72,7 +74,7 @@ func Main(versionInfo *utils.VersionInfo) {
 	conf.DataBase.Account = encryption.Decrypt(conf.DataBase.Account, iv)
 	conf.DataBase.Password = encryption.Decrypt(conf.DataBase.Password, iv)
 	conf.DataBase.Schema = encryption.Decrypt(conf.DataBase.Schema, iv)*/
-	bean.DbEngine, err = utils.CreateOrmEngine(conf.DataBase.Account, conf.DataBase.Password, conf.DataBase.IP,
+	bean.DbEngine, err = mysql.CreateOrmEngine(conf.DataBase.Account, conf.DataBase.Password, conf.DataBase.IP,
 		conf.DataBase.Port, conf.DataBase.Schema, conf.DataBase.Charset, conf.DataBase.MaxIdle, conf.DataBase.MaxOpen)
 	if err != nil {
 		golog.Errorx("0", "Connect db error:%v\n", err.Error())

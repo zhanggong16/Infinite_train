@@ -1,4 +1,4 @@
-package utils
+package linux
 
 import (
 	"github.com/juju/errors"

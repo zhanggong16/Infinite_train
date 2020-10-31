@@ -1,4 +1,4 @@
-package utils
+package mysql
 
 import (
 	"Infinite_train/pkg/common/utils/log/golog"

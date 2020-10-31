@@ -1,0 +1,11 @@
+curl -i -X GET \
+ http://127.0.0.1:7001/v1.0/instances/xxx-123123\
+ -H 'X-Pin: abc' \
+ -H 'X-Tenant-Id: xxxxxx' \
+ -H 'X-Region: beijing' \
+ -H 'X-Password: xxx' \
+ -H 'X-Role: admin' \
+ -H 'Content-Type: application/json' \
+ -H 'Accept: application/json' \
+ -H 'X-Tenant-Name: abc' \
+ -H 'X-Request-Id: 123123'
