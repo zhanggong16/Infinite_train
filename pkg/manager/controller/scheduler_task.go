@@ -10,9 +10,6 @@ func TestCon() {
 	requestId := uuid.NewV4().String()
 	golog.Infof(requestId, "start TestCon")
 	time.Sleep(120 * time.Second)
+	golog.Infof(requestId, "end TestCon")
 }
 
-func TestScheduler() {
-	requestId := uuid.NewV4().String()
-	golog.Infof(requestId, "start TestScheduler")
-}
