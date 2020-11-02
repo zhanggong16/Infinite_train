@@ -3,7 +3,7 @@ web_addr = ":7001"
 
 [manager]
 ip_prefix = "172."
-region = "beijing-1"
+region = "beijing"
 admin_roles = ["admin"]
 availability_zones = "az1"
 resource_pool = "general"
@@ -59,3 +59,6 @@ polling_timeout_huge = 1800
 polling_interval_low = 3
 polling_interval_medium = 5
 polling_interval_high = 10
+
+[cron_interval]
+interval_ping_pong = 60

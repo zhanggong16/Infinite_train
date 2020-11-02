@@ -67,7 +67,7 @@ func UmpDecorator(fn func(c echo.Context) error) func(c echo.Context) error {
 		UmpRec := &ump.Record{}
 		ct := time.Unix(secon, 0)
 		UmpRec.StartTime = fmt.Sprintf("%d%02d%02d%02d%02d%02d%03d", ct.Year(), ct.Month(), ct.Day(), ct.Hour(), ct.Minute(), ct.Second(), millis%1e3)
-		UmpRec.AppName = "dbs_api_server"
+		UmpRec.AppName = "manager"
 		UmpRec.Hostname, _ = os.Hostname()
 		UmpRec.Key = strings.Replace(strings.TrimPrefix(filepath.Base(handlerName(fn)), "restful.(*Server)."), `-fm`, ``, -1)
 		if c.Response().Status < 300 {
@@ -77,7 +77,7 @@ func UmpDecorator(fn func(c echo.Context) error) func(c echo.Context) error {
 		}
 		UmpRec.RequestID = requestID
 		UmpRec.ElapsedTime = fmt.Sprintf("%d", int(time.Since(begin)/1000000))
-		golog.Debugf(requestID, "UmpRecord:%+v", UmpRec)
+		//golog.Debugf(requestID, "UmpRecord:%+v", UmpRec)
 		UmpRec.WriteToFile()
 		return err
 	}

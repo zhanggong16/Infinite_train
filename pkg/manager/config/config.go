@@ -23,24 +23,29 @@ type RPCServer struct {
 }
 
 type DataBase struct {
-	Account  string	`toml:"account"`
-	Password string	`toml:"password"`
-	Port     int	`toml:"port"`
-	Schema   string	`toml:"schema"`
+	Account  string `toml:"account"`
+	Password string `toml:"password"`
+	Port     int    `toml:"port"`
+	Schema   string `toml:"schema"`
 	IP       string `toml:"ip"`
-	Charset  string	`toml:"charset"`
-	MaxIdle  int	`toml:"maxIdle"`
-	MaxOpen  int	`toml:"maxOpen"`
+	Charset  string `toml:"charset"`
+	MaxIdle  int    `toml:"maxIdle"`
+	MaxOpen  int    `toml:"maxOpen"`
+}
+
+type CronInterval struct {
+	IntervalPingPong		uint64 `toml:"interval_ping_pong"`
 }
 
 type Config struct {
-	WebAddr          string         				`toml:"web_addr"`
-	ManagerConfig    *ManagerCfg    				`toml:"manager"`
-	RPCServer        *RPCServer     				`toml:"rpc_server"`
-	DataBase         *DataBase      				`toml:"database"`
-	LogConfigs       map[string]*config.LogConfig 	`toml:"logs"`
-	RetryConfig      *config.RetryConfig			`toml:"retry"`
-	PollingConfig    *config.PollingConfig			`toml:"polling"`
+	WebAddr       string                       `toml:"web_addr"`
+	ManagerConfig *ManagerCfg                  `toml:"manager"`
+	RPCServer     *RPCServer                   `toml:"rpc_server"`
+	DataBase      *DataBase                    `toml:"database"`
+	LogConfigs    map[string]*config.LogConfig `toml:"logs"`
+	RetryConfig   *config.RetryConfig          `toml:"retry"`
+	PollingConfig *config.PollingConfig        `toml:"polling"`
+	CronInterval  *CronInterval                `toml:"cron_interval"`
 }
 
 // func...
