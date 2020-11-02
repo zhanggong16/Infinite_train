@@ -177,7 +177,7 @@ func (s *Server) RegisterContext() {
 			}
 			baseCc := &request.CommonContext{RequestID: requestID, Token: token, TenantID: tenantID,
 				TenantName: tenantName, Pin: pin, Region: region, Password: password, IsAdmin: isAdmin}
-			cc := request.CustomContext{Context: c, CommonContext: baseCc}
+			cc := &request.CustomContext{Context: c, CommonContext: baseCc}
 			return h(cc)
 		}
 	})
