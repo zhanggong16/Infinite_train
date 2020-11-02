@@ -5,4 +5,4 @@ dlv exec "./bin/manager"
 echo zhanggong | openssl aes-256-cbc -K 123123 -base64 -iv 123123 -A
 
 # 解密例子
-echo MZAUXrF1NhpqLLJgP+QtBQ== | openssl aes-256-cbc -d -K 123123 -base64 -iv 123123 -A
+echo MZAUXrF1NhpqLLJgP+QtBE== | openssl aes-256-cbc -d -K 123123 -base64 -iv 123123 -A
