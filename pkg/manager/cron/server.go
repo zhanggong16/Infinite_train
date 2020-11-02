@@ -11,6 +11,7 @@ var scheduler = gocron.NewScheduler(time.UTC)
 
 func registerCron() {
 	scheduler.Every(context.Instance.Config.CronInterval.IntervalPingPong).Seconds().Do(controller.TestCon)
+	scheduler.Every(1).Day().At("10:10:10").Do(controller.TestScheduler)
 }
 
 func Start() (chan struct{}, error) {

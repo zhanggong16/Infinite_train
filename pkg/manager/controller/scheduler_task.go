@@ -9,3 +9,8 @@ func TestCon() {
 	requestId := uuid.NewV4().String()
 	golog.Infof(requestId, "start TestCon")
 }
+
+func TestScheduler() {
+	requestId := uuid.NewV4().String()
+	golog.Infof(requestId, "start TestScheduler")
+}
