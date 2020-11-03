@@ -51,7 +51,7 @@ func (s *Server) Run() error {
 }
 
 func (s *Server) RegisterURL() {
-	s.GET("/v1.0/instances/:gid", UmpDecorator(s.Instances))
+	s.GET("/v1.0/instances/:gid", UmpDecorator(s.DescribeInstances))
 
 }
 
@@ -140,7 +140,6 @@ func (s *Server) RegisterContext() {
 			uri := c.Request().RequestURI
 			if strings.HasSuffix(uri, "/") || strings.Contains(uri, "//") {
 				return echo.NewHTTPError(http.StatusBadRequest, "url is error!")
-
 			}
 
 			if pin == "" {

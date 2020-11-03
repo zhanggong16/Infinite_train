@@ -11,8 +11,10 @@ import (
 	rpcService "Infinite_train/pkg/manager/api/rpc"
 	"Infinite_train/pkg/manager/config"
 	"Infinite_train/pkg/manager/context"
+	"Infinite_train/pkg/manager/controller"
 	"Infinite_train/pkg/manager/cron"
 	"Infinite_train/pkg/manager/model/bean"
+	"Infinite_train/pkg/manager/service"
 	"flag"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
@@ -87,8 +89,8 @@ func Main(versionInfo *utils.VersionInfo) {
 	golog.Infof("0", "Init db client successfully!")
 
 	// init interface
-	/*controller.InitControllerLayer()
-	service.InitServiceLayer()*/
+	controller.InitControllerLayer()
+	service.InitServiceLayer()
 
 	// init restful server
 	server, err := restful.NewServer(conf)

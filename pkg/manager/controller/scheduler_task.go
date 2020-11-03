@@ -7,7 +7,7 @@ import (
 
 func TestCon() {
 	requestId := uuid.NewV4().String()
-	golog.Infof(requestId, "start TestCon")
+	golog.Infof(requestId, "start TestCon per 1 min")
 	/*time.Sleep(120 * time.Second)
 	golog.Infof(requestId, "end TestCon")*/
 }
