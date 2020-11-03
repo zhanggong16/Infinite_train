@@ -40,7 +40,7 @@ func (r *Server) Close() {
 	}
 
 	if r.netListener != nil {
-		golog.Info("0", "rpc server stoping listening on:", "address", r.netListener.Addr())
+		golog.Info("0", "rpc server stoping listening on: ", "address", r.netListener.Addr())
 		clErr := r.netListener.Close()
 		if clErr != nil {
 			golog.Error("0", clErr.Error())
@@ -54,7 +54,7 @@ func (r *Server) Close() {
 func (r *Server) ListenRPC() {
 	l, e := net.Listen("tcp", r.listenAddress)
 	if e != nil {
-		golog.Info("0", "rpc server listen error ", "err", e)
+		golog.Info("0", "rpc server listen error: ", "err", e)
 		return
 	}
 
@@ -62,13 +62,13 @@ func (r *Server) ListenRPC() {
 	for {
 		select {
 		case <-r.closed:
-			golog.Info("0", "rpc server stoping listening ")
+			golog.Info("0", "rpc server stoping listening")
 			return
 		default:
 		}
 		conn, err := l.Accept()
 		if err != nil {
-			golog.Info("0", "rpc server side , accept rpc conn err:", "err", err)
+			golog.Info("0", "rpc server side, accept rpc conn err: ", "err", err)
 			continue
 		}
 		go func(conn net.Conn) {
@@ -82,7 +82,7 @@ func (r *Server) ListenRPC() {
 					//f := "PANIC: %s\n%s"
 					//rec.Logger.Printf(f, err, stack)
 					//golog.Info("0", "rpc server panic:", "err", err, "stack", stack)
-					golog.Errorf("0", "rpc server panic, err:%s, stack:%s", err, stack)
+					golog.Errorf("0", "rpc server panic, err: %s, stack: %s", err, stack)
 				}
 			}()
 
@@ -97,9 +97,9 @@ func (r *Server) ListenRPC() {
 			err = rpc.ServeRequest(srv)
 			if err != nil {
 				if err != io.EOF && err != io.ErrUnexpectedEOF {
-					golog.Errorf("0", "rpc server side, rpc request error:", "err", err.Error())
+					golog.Errorf("0", "rpc server side, rpc request error: ", "err", err.Error())
 				} else {
-					golog.Tracef("0", "rpc server side, rpc request empty:", "err", err)
+					golog.Tracef("0", "rpc server side, rpc request empty: ", "err", err)
 				}
 			}
 			clErr := srv.Close()
