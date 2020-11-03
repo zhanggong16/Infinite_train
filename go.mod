@@ -5,6 +5,7 @@ go 1.13
 require (
 	github.com/BurntSushi/toml v0.3.1
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
+	github.com/easierway/concurrent_map v0.0.0-20190103024436-7073b0dd7e95
 	github.com/go-co-op/gocron v0.3.1
 	github.com/go-playground/universal-translator v0.17.0 // indirect
 	github.com/go-sql-driver/mysql v1.4.1

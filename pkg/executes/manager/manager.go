@@ -2,11 +2,13 @@ package manager
 
 import (
 	logCommonConfig "Infinite_train/pkg/common/config"
+	"Infinite_train/pkg/common/rpc"
 	"Infinite_train/pkg/common/utils"
 	"Infinite_train/pkg/common/utils/linux"
 	"Infinite_train/pkg/common/utils/log/golog"
 	"Infinite_train/pkg/common/utils/mysql"
 	"Infinite_train/pkg/manager/api/restful"
+	rpcService "Infinite_train/pkg/manager/api/rpc"
 	"Infinite_train/pkg/manager/config"
 	"Infinite_train/pkg/manager/context"
 	"Infinite_train/pkg/manager/cron"
@@ -31,7 +33,7 @@ func Main(versionInfo *utils.VersionInfo) {
 		}
 	}()
 
-	var banner = "Welcome to infinite train manager!"
+	var banner = "Welcome to manager!"
 
 	var cfgFile = flag.String("config", "/etc/manager.toml", "manager configure file absolute path!")
 	var isShowVersion = false
@@ -98,9 +100,18 @@ func Main(versionInfo *utils.VersionInfo) {
 	// init crontab server
 	cronC, err := cron.Start()
 	if err != nil {
-		golog.Errorx("0", "init schedule cron error:%v\n", err.Error())
+		golog.Errorx("0", "init schedule cron error: %s\n", err.Error())
 		return
 	}
+
+	// init rpc server
+	rpcServiceInit := new(rpcService.ManagerRPC)
+	rpcServer, err := rpc.NewServer(conf, rpcServiceInit)
+	if err != nil {
+		golog.Errorx("0", "new rpc server occurs error: %s\n", err.Error())
+		return
+	}
+	go rpcServer.Run()
 
 	// SIGHUP: reload，终端控制进程结束
 	// SIGINT: ctrl + c
@@ -128,8 +139,8 @@ func Main(versionInfo *utils.VersionInfo) {
 					GlobalSysLogger.Close()
 				}
 				server.Close()
+				rpcServer.Close()
 				close(cronC)
-				//rpc.Close()
 				golog.Close()
 				close(exitChan)
 				return
@@ -139,6 +150,7 @@ func Main(versionInfo *utils.VersionInfo) {
 		}
 	}()
 	<-exitChan
+
 	err = server.Run()
 	if err != nil {
 		golog.Errorx("0", "Restful server run occurs error: %s\n", err.Error())

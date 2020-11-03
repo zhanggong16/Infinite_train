@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"github.com/easierway/concurrent_map"
 	"math/rand"
 	"time"
 )
@@ -10,9 +11,7 @@ import (
 // interface 只能是指针类型的实例,new(GoProgrammer) or &GoProgrammer{}
 // 空接口可以表达任何类型，通过断言可以将空接口转换为定制类型 v, ok := p.(int)
 
-
 // os.Exit 不会调用defer函数，不会输出调用栈信息
-
 
 func returnMultiValues() (int, int) {
 	return rand.Intn(10), rand.Intn(20)
@@ -20,21 +19,20 @@ func returnMultiValues() (int, int) {
 
 func Sum(op ...int) int {
 	ret := 0
-	for _, v :=range op {
+	for _, v := range op {
 		ret += v
 	}
 	return ret
 }
-
 
 func Clear() {
 	fmt.Println("Clear resource")
 }
 
 type Employee struct {
-	Id string
-	Name	string
-	Age	int
+	Id   string
+	Name string
+	Age  int
 }
 
 func (e *Employee) String() string {
@@ -66,7 +64,6 @@ func (j *JavaProgrammer) WriteHelloWorld() Code {
 	return "java: hello world"
 }
 
-
 func WriteFirstProgram(p Programmer) {
 	fmt.Printf("%T, %v\n", p, p.WriteHelloWorld())
 }
@@ -87,7 +84,6 @@ func slowFunc(op int) int {
 	return op
 }
 
-
 type Pet struct {
 	Name string
 }
@@ -103,7 +99,7 @@ func (p *Pet) SpeakTo(host string) {
 
 type Dog struct {
 	Pet
-	Sex	string
+	Sex string
 }
 
 func (d *Dog) Speak() {
@@ -112,8 +108,8 @@ func (d *Dog) Speak() {
 
 // * &的区别
 type Rect struct {
-	Width 	int
-	Height	int
+	Width  int
+	Height int
 }
 
 func (r *Rect) size() int {
@@ -145,24 +141,27 @@ var LargerThanHunderdError = errors.New("LargerThanHunderdError")
 
 func GetFib(n int) ([]int, error) {
 
-
-	fibList := []int{1,1}
+	fibList := []int{1, 1}
 	if n < 2 {
 		return nil, LessThanTwoError
 	}
-	if  n > 100 {
+	if n > 100 {
 		return nil, LargerThanHunderdError
 	}
 
-	for i:=2; i<n; i++ {
-		fibList = append(fibList, fibList[i-2] + fibList[i-1])
+	for i := 2; i < n; i++ {
+		fibList = append(fibList, fibList[i-2]+fibList[i-1])
 	}
 	return fibList, nil
 }
 
+func init() {
+	fmt.Println("init1")
+}
 
-
-
+func init() {
+	fmt.Println("init2")
+}
 
 func main() {
 	//EmptyInterface("10")
@@ -172,8 +171,12 @@ func main() {
 		}
 	}()
 
-	fmt.Println("start")
-	panic(errors.New("wrong"))
+	m := concurrent_map.CreateConcurrentMap(99)
+	m.Set(concurrent_map.StrKey("key"), 10)
+	fmt.Println(m.Get(concurrent_map.StrKey("key")))
+
+	/*fmt.Println("start")
+	panic(errors.New("wrong"))*/
 	/*if s, err := GetFib(-1); err != nil {
 		if err == LessThanTwoError {
 			fmt.Println("less")
@@ -183,7 +186,6 @@ func main() {
 	} else {
 		fmt.Println(s)
 	}*/
-
 
 	/*r := &Rect{Width: 100, Height: 100}
 	fmt.Println(r.size())*/
