@@ -5,11 +5,11 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/BurntSushi/toml"
 	"time"
 )
-import "github.com/BurntSushi/toml"
 
-type ManagerCfg struct {
+type AgentCfg struct {
 	IPPrefix     string   `toml:"ip_prefix"`
 	Region       string   `toml:"region"`
 	AdminRoles   []string `toml:"admin_roles"`
@@ -22,30 +22,24 @@ type RPCServer struct {
 	CodecTimeout time.Duration `toml:"codec_timeout"`
 }
 
-type DataBase struct {
-	Account  string `toml:"account"`
-	Password string `toml:"password"`
-	Port     int    `toml:"port"`
-	Schema   string `toml:"schema"`
-	IP       string `toml:"ip"`
-	Charset  string `toml:"charset"`
-	MaxIdle  int    `toml:"maxIdle"`
-	MaxOpen  int    `toml:"maxOpen"`
-}
-
 type CronInterval struct {
 	IntervalEveryMinute		uint64 `toml:"interval_every_minute"`
 }
 
+type ManagerRPCServer struct {
+	Address      string
+	CodecTimeout time.Duration `toml:"codec_timeout"`
+	DialTimeout  time.Duration `toml:"dial_timeout"`
+}
+
 type Config struct {
-	WebAddr       string                       `toml:"web_addr"`
-	ManagerConfig *ManagerCfg                  `toml:"manager"`
-	RPCServer     *RPCServer                   `toml:"rpc_server"`
-	DataBase      *DataBase                    `toml:"database"`
-	LogConfigs    map[string]*config.LogConfig `toml:"logs"`
-	RetryConfig   *config.RetryConfig          `toml:"retry"`
-	PollingConfig *config.PollingConfig        `toml:"polling"`
-	CronInterval  *CronInterval                `toml:"cron_interval"`
+	AgentConfig			*AgentCfg                  		`toml:"manager"`
+	ManagerRPCServer	*ManagerRPCServer				`toml:"manager_rpc_server"`
+	RPCServer     		*RPCServer                   	`toml:"rpc_server"`
+	LogConfigs   		map[string]*config.LogConfig 	`toml:"logs"`
+	RetryConfig   		*config.RetryConfig          	`toml:"retry"`
+	PollingConfig 		*config.PollingConfig        	`toml:"polling"`
+	CronInterval  		*CronInterval                	`toml:"cron_interval"`
 }
 
 // func...

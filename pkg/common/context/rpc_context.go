@@ -1,6 +1,10 @@
 package context
 
 type PingPongRequest struct {
-	RequestId	string
-	AgentIp		string
+	RequestID	string
+}
+
+type ReportHeartBeatRequest struct {
+	RequestID	string
+	AgentIP		string
 }

@@ -1,6 +1,4 @@
-# Infinite train manager config file
-web_addr = ":7001"
-
+# Infinite train agent config file
 [manager]
 ip_prefix = "172."
 region = "beijing"
@@ -8,25 +6,20 @@ admin_roles = ["admin"]
 availability_zones = "az1"
 resource_pool = "general"
 
-[rpc_server]
-address = ":7002"
+[manager_rpc_server]
+address = "172.17.0.12:7002"
 codec_timeout = 60
+dial_timeout = 10
 
-[database]
-account = "xxx"
-password = "xxx"
-ip = "xxx"
-port = 23306
-schema ="xxx"
-charset = "utf8"
-maxIdle = 0
-maxOpen = 0
+[rpc_server]
+address = ":7003"
+codec_timeout = 60
 
 [logs]
     [logs.default]
     target = "file"
     level = "debug"
-    path = "/var/log/infinite_train/manager.log"
+    path = "/var/log/infinite_train/agent.log"
     rotate_method = "rotate_by_count"
     rotate_file_size = 314572800
     rotate_file_count = 30
@@ -34,7 +27,7 @@ maxOpen = 0
     [logs.error]
     target = "file"
     level = "error"
-    path = "/var/log/infinite_train/manager_error.log"
+    path = "/var/log/infinite_train/agent_error.log"
     rotate_method = "rotate_by_count"
     rotate_file_size = 10485760 #1024x1024x10=10M
     rotate_file_count = 3

@@ -3,15 +3,16 @@ package rpc
 import (
 	"Infinite_train/pkg/common/context"
 	"Infinite_train/pkg/common/utils/log/golog"
+	"fmt"
 )
 
 type ManagerRPC struct {
 }
 
-func (rpc *ManagerRPC) PingPong(req *context.PingPongRequest, reply *string) error {
-	*reply = "okay"
-	requestId := req.RequestId
+func (rpc *ManagerRPC) ReceiveHeartBeat(req *context.ReportHeartBeatRequest, reply *string) error {
+	*reply = fmt.Sprintf("received agent [%s] heart beat", req.AgentIP)
+	requestID := req.RequestID
 
-	golog.Infof(requestId, "ReportHeatBeat, req [%+v], reply [%+v]", *req, *reply)
+	golog.Infof(requestID, "ReceiveHeartBeat, req [%+v], reply [%+v]", *req, *reply)
 	return nil
 }

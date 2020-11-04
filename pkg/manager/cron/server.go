@@ -12,7 +12,7 @@ import (
 var scheduler = gocron.NewScheduler(time.UTC)
 
 func registerCron() {
-	scheduler.Every(context.Instance.Config.CronInterval.IntervalPingPong).Seconds().Do(controller.TestCon)
+	scheduler.Every(context.Manager.Config.CronInterval.IntervalEveryMinute).Seconds().Do(controller.TestCon)
 }
 
 func Start() (chan struct{}, error) {

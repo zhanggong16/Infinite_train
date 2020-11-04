@@ -1,23 +1,15 @@
-package manager
+package agent
 
 import (
+	"Infinite_train/pkg/agent/config"
+	"Infinite_train/pkg/agent/context"
+	"Infinite_train/pkg/agent/cron"
 	logCommonConfig "Infinite_train/pkg/common/config"
-	"Infinite_train/pkg/common/rpc"
 	"Infinite_train/pkg/common/utils"
 	"Infinite_train/pkg/common/utils/linux"
 	"Infinite_train/pkg/common/utils/log/golog"
-	"Infinite_train/pkg/common/utils/mysql"
-	"Infinite_train/pkg/manager/api/restful"
-	rpcService "Infinite_train/pkg/manager/api/rpc"
-	"Infinite_train/pkg/manager/config"
-	"Infinite_train/pkg/manager/context"
-	"Infinite_train/pkg/manager/controller"
-	"Infinite_train/pkg/manager/cron"
-	"Infinite_train/pkg/manager/model/bean"
-	"Infinite_train/pkg/manager/service"
 	"flag"
 	"fmt"
-	_ "github.com/go-sql-driver/mysql"
 	"os"
 	"os/signal"
 	"runtime"
@@ -35,9 +27,9 @@ func Main(versionInfo *utils.VersionInfo) {
 		}
 	}()
 
-	var banner = "Welcome to manager!"
+	var banner = "Welcome to agent!"
 
-	var cfgFile = flag.String("config", "/etc/manager.toml", "manager configure file absolute path!")
+	var cfgFile = flag.String("config", "/etc/agent.toml", "agent configure file absolute path!")
 	var isShowVersion = false
 	flag.BoolVar(&isShowVersion, "version", false, "Show version")
 	flag.Parse()
@@ -62,8 +54,8 @@ func Main(versionInfo *utils.VersionInfo) {
 		fmt.Printf("Get local IP failed!\n")
 		return
 	}
-	context.Manager.Config = conf
-	context.Manager.LocalIP = localIP
+	context.Agent.Config = conf
+	context.Agent.LocalIP = localIP
 
 	// init log
 	err = logCommonConfig.InitConfig(conf.LogConfigs)
@@ -74,31 +66,6 @@ func Main(versionInfo *utils.VersionInfo) {
 	golog.Info("0", banner, "time: ", time.Now())
 	golog.Infof("0", "Init Config: %s", conf.String())
 
-	// init meta db
-	/*iv := conf.ProductLineValue
-	conf.DataBase.Account = encryption.Decrypt(conf.DataBase.Account, iv)
-	conf.DataBase.Password = encryption.Decrypt(conf.DataBase.Password, iv)
-	conf.DataBase.Schema = encryption.Decrypt(conf.DataBase.Schema, iv)*/
-	bean.DbEngine, err = mysql.CreateOrmEngine(conf.DataBase.Account, conf.DataBase.Password, conf.DataBase.IP,
-		conf.DataBase.Port, conf.DataBase.Schema, conf.DataBase.Charset, conf.DataBase.MaxIdle, conf.DataBase.MaxOpen)
-	if err != nil {
-		golog.Errorx("0", "Connect db error:%v\n", err.Error())
-		return
-	}
-	bean.DbEngine.ShowSQL(false)
-	golog.Infof("0", "Init db client successfully!")
-
-	// init interface
-	controller.InitControllerLayer()
-	service.InitServiceLayer()
-
-	// init restful server
-	server, err := restful.NewServer(conf)
-	if err != nil {
-		golog.Errorx("0", "New restful server occurs error: %s\n", err.Error())
-		return
-	}
-
 	// init crontab server
 	cronC, err := cron.Start()
 	if err != nil {
@@ -107,13 +74,13 @@ func Main(versionInfo *utils.VersionInfo) {
 	}
 
 	// init rpc server
-	rpcServiceInit := new(rpcService.ManagerRPC)
+	/*rpcServiceInit := new(rpcService.ManagerRPC)
 	rpcServer, err := rpc.NewServer(conf, rpcServiceInit)
 	if err != nil {
 		golog.Errorx("0", "new rpc server occurs error: %s\n", err.Error())
 		return
 	}
-	go rpcServer.Run()
+	go rpcServer.Run()*/
 
 	// SIGHUP: reload，终端控制进程结束
 	// SIGINT: ctrl + c
@@ -132,7 +99,7 @@ func Main(versionInfo *utils.VersionInfo) {
 					golog.Errorf("0", "Parse config file failed!", "signal", sig)
 					return
 				}
-				context.Manager.Config = configNew
+				context.Agent.Config = configNew
 				golog.Info("0", "SIGHUP parse config file successfully!", "signal", sig)
 				golog.Infof("0", "SIGHUP Config: %s", configNew.String())
 			} else if sig == syscall.SIGINT || sig == syscall.SIGTERM || sig == syscall.SIGQUIT {
@@ -140,8 +107,7 @@ func Main(versionInfo *utils.VersionInfo) {
 				for _, GlobalSysLogger := range golog.GlobalSysLoggers {
 					GlobalSysLogger.Close()
 				}
-				server.Close()
-				rpcServer.Close()
+				//rpcServer.Close()
 				close(cronC)
 				golog.Close()
 				close(exitChan)
@@ -153,7 +119,6 @@ func Main(versionInfo *utils.VersionInfo) {
 	}()
 	<-exitChan
 
-	err = server.Run()
 	if err != nil {
 		golog.Errorx("0", "Restful server run occurs error: %s\n", err.Error())
 		return
