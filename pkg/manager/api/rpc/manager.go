@@ -8,7 +8,7 @@ import (
 type ManagerRPC struct {
 }
 
-func (rpc *ManagerRPC) ReportHeatBeat(req *context.ReportHeatBeatRequest, reply *string) error {
+func (rpc *ManagerRPC) PingPong(req *context.PingPongRequest, reply *string) error {
 	*reply = "okay"
 	requestId := req.RequestId
 

@@ -3,8 +3,8 @@ package main
 import (
 	"errors"
 	"fmt"
-	"github.com/easierway/concurrent_map"
 	"math/rand"
+	"sync"
 	"time"
 )
 
@@ -171,9 +171,69 @@ func main() {
 		}
 	}()
 
-	m := concurrent_map.CreateConcurrentMap(99)
+	var wg sync.WaitGroup
+	for i:=0;i<10;i++ {
+		wg.Add(1)
+		go func (i int){
+			fmt.Println(i)
+			wg.Done()
+		}(i)
+		wg.Wait()
+	}
+
+	//go waitGroup
+	/*var mut sync.Mutex
+	var wg sync.WaitGroup
+	counter := 0
+	for i:=0;i <5000;i++ {
+		wg.Add(1)
+		go func() {
+			defer func() {
+				mut.Unlock()
+			}()
+			mut.Lock()
+			counter++
+			wg.Done()
+		}()
+	}
+	wg.Wait()
+	fmt.Println(counter)*/
+
+	//go lock
+	/*var mut sync.Mutex
+	counter := 0
+	for i:=0;i <5000;i++ {
+		go func() {
+			defer func() {
+				mut.Unlock()
+			}()
+			mut.Lock()
+			counter++
+		}()
+	}
+	time.Sleep(1*time.Second)
+	fmt.Println(counter)*/
+
+	//go
+	/*counter := 0
+	for i:=0;i <5000;i++ {
+		go func() {
+			counter++
+		}()
+	}
+	time.Sleep(1*time.Second)
+	fmt.Println(counter)*/
+
+	/*for i:=0;i<10;i++ {
+		go func (i int) {
+			fmt.Println(i)
+		}(i)
+		time.Sleep(1*time.Millisecond)
+	}*/
+
+	/*m := concurrent_map.CreateConcurrentMap(99)
 	m.Set(concurrent_map.StrKey("key"), 10)
-	fmt.Println(m.Get(concurrent_map.StrKey("key")))
+	fmt.Println(m.Get(concurrent_map.StrKey("key")))*/
 
 	/*fmt.Println("start")
 	panic(errors.New("wrong"))*/

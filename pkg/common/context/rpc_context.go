@@ -1,6 +1,6 @@
 package context
 
-type ReportHeatBeatRequest struct {
+type PingPongRequest struct {
 	RequestId	string
 	AgentIp		string
 }
