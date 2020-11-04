@@ -1,4 +1,4 @@
-package agent
+package main
 
 import (
 	"Infinite_train/pkg/common/utils"
