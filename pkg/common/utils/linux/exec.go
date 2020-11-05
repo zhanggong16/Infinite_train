@@ -1,8 +1,10 @@
 package linux
 
 import (
+	"Infinite_train/pkg/common/utils/log/golog"
 	"github.com/juju/errors"
 	"os/exec"
+	"reflect"
 	"strings"
 	"time"
 )
@@ -18,17 +20,34 @@ func Exec(cmd string) (string, error) {
 	return cnt, nil
 }
 
-func ExecWithPolling(cmd string, interval, timeout time.Duration, condition interface{}, args interface{}) (string, error) {
+func ExecWithPolling(requestID, cmd string, interval, timeout time.Duration, condition interface{}, args interface{}) error {
+	// 检查传入参数condition是否符合规范
+	typ := reflect.TypeOf(condition)
+	if typ.Kind() != reflect.Func {
+		panic("Only function can be condition")
+	}
+	rc, err := condition.(func(interface{}) (bool, error))(args)
+	if rc == true {
+		golog.Info(requestID, "Success check finishing polling")
+		return nil
+	}
+	if err != nil {
+		msg := "Failed to check polling condition"
+		golog.Info(requestID, msg)
+		err := errors.New(msg)
+		return err
+	}
+
 	ticker := time.NewTicker(interval * time.Second)
 	if ticker == nil {
-		err := errors.New("create ticker error")
-		return "", err
+		err := errors.New("Create ticker error")
+		return err
 	}
 
 	runningCmd := exec.Command("/bin/bash", "-c", cmd)
-	err := runningCmd.Start()
+	err = runningCmd.Start()
 	if err != nil {
-		return "", err
+		return err
 	}
 
 	status := make(chan error, 1)
@@ -40,19 +59,24 @@ func ExecWithPolling(cmd string, interval, timeout time.Duration, condition inte
 	for {
 		select {
 		case t := <-status:
-			return "", t
+			return t
 		case <-ticker.C:
 			tickSum += interval
 			if tickSum >= timeout {
-				err := errors.New("poll timeout")
+				err := errors.New("Polling timeout")
 				ticker.Stop()
-				return "", err
+				return err
 			}
-			_, err := condition.(func(interface{}) (bool, error))(args)
+			rc, err := condition.(func(interface{}) (bool, error))(args)
 			if err != nil {
-				//golog.Infof("check error: %s, will kill [%s]", err.Error(), cmd)
+				golog.Infof("Condition check error: [%s], will kill [%s]", err.Error(), cmd)
 				runningCmd.Process.Kill()
-				return "", err
+				return err
+			}
+			if rc == false {
+				golog.Infof("Condition check failed, will kill [%s]", cmd)
+				runningCmd.Process.Kill()
+				return err
 			}
 		}
 	}

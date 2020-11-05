@@ -119,10 +119,5 @@ func Main(versionInfo *utils.VersionInfo) {
 	}()
 	<-exitChan
 
-	if err != nil {
-		golog.Errorx("0", "Restful server run occurs error: %s\n", err.Error())
-		return
-	}
-
 	return
 }

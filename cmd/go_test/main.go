@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"math/rand"
-	"sync"
 	"time"
 )
 
@@ -155,12 +154,42 @@ func GetFib(n int) ([]int, error) {
 	return fibList, nil
 }
 
-func init() {
+/*func init() {
 	fmt.Println("init1")
 }
 
 func init() {
 	fmt.Println("init2")
+}*/
+
+func listD(a string, d ...string) string {
+	for _, v := range d {
+		fmt.Println(a, v)
+	}
+	return ""
+}
+
+func service() string {
+	time.Sleep(time.Millisecond*50)
+	return "1 Done"
+}
+
+func otherTask() {
+	fmt.Println("2 working on something else")
+	time.Sleep(time.Millisecond*100)
+	fmt.Println("2 Task is done")
+}
+
+func AsyncService() chan string {
+	//retCh := make(chan string)
+	retCh := make(chan string, 1)
+	go func() {
+		ret := service()
+		fmt.Println("1 returned result")
+		retCh <- ret
+		fmt.Println("1 service exit")
+	}()
+	return retCh
 }
 
 func main() {
@@ -171,7 +200,17 @@ func main() {
 		}
 	}()
 
-	var wg sync.WaitGroup
+	retCh := AsyncService()
+	otherTask()
+	t := <-retCh
+	fmt.Println(t)
+	time.Sleep(time.Second*1)
+
+	/*s := "zhang"
+	d := []string{"1","2","3"}
+	listD(s,d...)*/
+
+	/*var wg sync.WaitGroup
 	for i:=0;i<10;i++ {
 		wg.Add(1)
 		go func (i int){
@@ -179,7 +218,7 @@ func main() {
 			wg.Done()
 		}(i)
 		wg.Wait()
-	}
+	}*/
 
 	//go waitGroup
 	/*var mut sync.Mutex
