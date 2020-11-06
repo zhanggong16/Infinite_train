@@ -39,6 +39,14 @@ maxOpen = 0
     rotate_file_size = 10485760 #1024x1024x10=10M
     rotate_file_count = 3
 
+    [logs.ump]
+    target = "file"
+    level = "fatal"
+    path = "/var/log/infinite_train/manager_ump.log"
+    rotate_method = "rotate_by_count"
+    rotate_file_size = 10485760
+    rotate_file_count = 3
+
 [retry]
 retry_count_low = 3
 retry_count_medium = 6
