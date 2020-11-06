@@ -2,12 +2,12 @@ package system
 
 import "Infinite_train/pkg/common/constant"
 
-type BaseModel struct {
+type BaseStruct struct {
 	InstanceIP		string
 	SystemMethod	string
 }
 
-type ResultBaseModel struct {
+type ResultBaseStruct struct {
 	CPUUtil			float64
 	CPULoad			float64
 	MemoryUsed		float64
@@ -20,19 +20,19 @@ type ResultBaseModel struct {
 }
 
 type CollectSystemBase interface {
-	perform() (*ResultBaseModel, error)
+	perform() (*ResultBaseStruct, error)
 }
 
-func Run(BaseModel *BaseModel) (result *ResultBaseModel, err error) {
+func Run(BaseModel *BaseStruct) (result *ResultBaseStruct, err error) {
 	baseModel := BaseModel
 	var cs CollectSystemBase
 	switch baseModel.SystemMethod {
 	case constant.CollectorSystemMethodAnsible:
-		cs = &Ansible{BaseModel: baseModel}
+		cs = &Ansible{BaseStruct: baseModel}
 	case constant.CollectorSystemMethodAgent:
 		cs = &Agent{BaseModel: baseModel}
 	default:
-		cs = &Ansible{BaseModel: baseModel}
+		cs = &Ansible{BaseStruct: baseModel}
 	}
 
 	result, err = cs.perform()
