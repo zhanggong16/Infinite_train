@@ -6,7 +6,8 @@ import (
 )
 
 type InstancesControllerBase interface {
-	GetInstances(ctx *request.CustomContext, id string) (*view.CommonGidView, *view.ResponseError)
+	GetInstances(cc *request.CommonContext, instanceID string) (*view.CommonGidView, *view.ResponseError)
+	ChangeInstanceName(mc *request.ManagerCommonContext, newInstanceName string) *view.ResponseError
 }
 
 var InstancesControllerImpl InstancesControllerBase = new(InstancesController)

@@ -11,18 +11,25 @@ import (
 type InstancesController struct {
 }
 
-func (ic *InstancesController) GetInstances(ctx *request.CustomContext, id string) (*view.CommonGidView, *view.ResponseError) {
-	requestID := ctx.CommonContext.RequestID
-	tenantID := ctx.CommonContext.TenantID
+func (ic *InstancesController) GetInstances(cc *request.CommonContext, instanceID string) (*view.CommonGidView, *view.ResponseError) {
+	requestID := cc.RequestID
+	tenantID := cc.TenantID
 	golog.Infof(requestID, "GetInstances, tenantID [%s]", tenantID)
 	// call service
-	resID, err := service.InstancesServiceImpl.GetInstancesWithFilter(ctx, id)
+	resID, err := service.InstancesServiceImpl.GetInstancesWithFilter(cc, instanceID)
 	if err != nil {
 		errorResp := view.NewResponseError(constant.SelectDBErrorCode, requestID, err.Error())
 		golog.Errorf(requestID, "tenant_id: %s, error message: %s", tenantID, errorResp.Error())
 		return nil, errorResp
 	}
 
-	resView := &view.CommonGidView{Gid: resID}
+	resView := &view.CommonGidView{GID: resID}
 	return resView, nil
+}
+func (ic *InstancesController) ChangeInstanceName(mc *request.ManagerCommonContext, newInstanceName string) *view.ResponseError {
+	requestID := mc.CommonContext.RequestID
+	tenantID := mc.CommonContext.TenantID
+	golog.Infof(requestID, "ChangeInstanceName, tenantID [%s], new instance name [%s]", tenantID, newInstanceName)
+
+	return nil
 }

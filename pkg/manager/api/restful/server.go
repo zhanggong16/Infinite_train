@@ -51,8 +51,9 @@ func (s *Server) Run() error {
 }
 
 func (s *Server) RegisterURL() {
-	s.GET("/v1.0/instances/:gid", UmpDecorator(s.DescribeInstances))
-
+	s.GET("/v1.0/instances/:gid", UmpDecorator(s.InstancesDescribe))
+	s.POST("/v1.0/instances", UmpDecorator(s.InstanceCreate))
+	s.PUT("/v1.0/instances/:gid", UmpDecorator(s.InstanceAction))
 }
 
 func UmpDecorator(fn func(c echo.Context) error) func(c echo.Context) error {

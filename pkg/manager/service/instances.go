@@ -8,9 +8,9 @@ import (
 type InstancesService struct {
 }
 
-func (is *InstancesService) GetInstancesWithFilter(ctx *request.CustomContext, id string) (string, error) {
-	requestID := ctx.CommonContext.RequestID
-	tenantID := ctx.CommonContext.TenantID
+func (is *InstancesService) GetInstancesWithFilter(cc *request.CommonContext, id string) (string, error) {
+	requestID := cc.RequestID
+	tenantID := cc.TenantID
 	golog.Infof(requestID, "GetInstancesWithFilter, tenantID [%s]", tenantID)
 
 	return id, nil

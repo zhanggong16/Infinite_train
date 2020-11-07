@@ -3,7 +3,7 @@ package service
 import "Infinite_train/pkg/manager/api/request"
 
 type InstancesServiceBase interface {
-	GetInstancesWithFilter(ctx *request.CustomContext, id string) (string, error)
+	GetInstancesWithFilter(cc *request.CommonContext, id string) (string, error)
 }
 
 var InstancesServiceImpl InstancesServiceBase = new(InstancesService)

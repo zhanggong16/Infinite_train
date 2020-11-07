@@ -25,6 +25,7 @@ const (
 	PollingSubTaskErrorCode                        StatusCode = 2008
 	ScpFileErrorCode                               StatusCode = 2009
 	PingAgentErrorCode                             StatusCode = 2010
+	StatusMethodNotAllowedErrorCode			       StatusCode = 2011
 )
 
 var statusText = map[StatusCode]string{
@@ -40,9 +41,10 @@ var statusText = map[StatusCode]string{
 	InstanceTaskStatusError: "RequestID %s select instance task ids [%s] not all success",
 	CreateFileError:         "RequestID %s An error occurred with file opening or creation\n file [%s]",
 	PollingErrorCode:        "RequestID %s ..polling...all ids %v status and success %v",
-	PollingSubTaskErrorCode: "RequestID %s ..polling sub task error:[%s]",
+	PollingSubTaskErrorCode: "RequestID %s ..polling sub task error [%s]",
 	ScpFileErrorCode:        "RequestID %s scp file %s error message %s",
-	PingAgentErrorCode:      "RequestID %s ping ip %s  error message %s",
+	PingAgentErrorCode:      "RequestID %s ping ip %s error message %s",
+	StatusMethodNotAllowedErrorCode:	"RequestID %s error message this method [%s] is not allow",
 }
 
 // ErrorMessage Show message form code.
@@ -53,7 +55,7 @@ func ErrorMessage(code StatusCode) string {
 //GetHTTPCode is function to map logic response code and http code
 func (s *StatusCode) GetHTTPCode() int {
 	switch *s {
-	case ParamErrorCode, BindParamErrorCode:
+	case ParamErrorCode, BindParamErrorCode, StatusMethodNotAllowedErrorCode:
 		return http.StatusBadRequest // 客户端请求的语法错误，服务器无法理解，请求参数有误
 	case DeleteDBNotExistCode:
 		return http.StatusNotFound // 服务器无法根据客户端的请求找到资源

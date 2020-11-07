@@ -11,4 +11,8 @@ const (
 
 	CollectorSystemMethodAnsible		= "ansible"		// 通过ansible的方式连接目标实例
 	CollectorSystemMethodAgent			= "agent"		// 通过部署agent的方式连接目标实例
+
+
+
+	InstanceNameRegEx = "^[A-Za-z0-9_\u4e00-\u9fa5_\\-_]{2,32}$"
 )
