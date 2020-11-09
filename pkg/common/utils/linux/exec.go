@@ -23,7 +23,7 @@ func Exec(requestID, cmd string) (string, error) {
 }
 
 func ExecWithTimeout(requestID, cmd string, timeout time.Duration) (string, error) {
-	//golog.Infof(requestID, "Exec with timeout cmd=[%s]", cmd)
+	golog.Infof(requestID, "Exec with timeout cmd=[%s], timeout [%s]", cmd, string(timeout))
 	var out bytes.Buffer
 	runningCmd := exec.Command("/bin/bash", "-c", cmd)
 	runningCmd.Stdout = &out

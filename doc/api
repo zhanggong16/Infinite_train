@@ -1,3 +1,93 @@
+# 实例资源接口
+
+| Method | URI | 描述 |
+|--------|-----|------|
+| POST   | /v1.0/instances | [创建实例](#创建实例) |
+| GET    | /v1.0/instances?pageindex={pageindex}&pagesize={pageindex} | [**显示实例列表**](#显示实例列表) |
+| POST   | /v1.0/instances_internal | [显示实例列表-内部](#显示实例列表-内部) |
+
+
+### 创建实例
+
+---
+
+#### HTTP请求
+
+POST <http://rds.jcloud.com/v1.0/instances>
+
+#### RDS请求参数
+
+- 请求参数
+
+| 参数名称 | 是否必选 | 类型 | 描述 |
+| :--- | :--- | :--- | :--- |
+| id | 是 | String | 产品线资源唯一标识ID |
+| name | 否 | String | 实例名称 |
+| rds_type | 是 | String | 实例类型（例：mysql，postgresql） |
+| rds_type_version | 是 | String |根据rds_type和rds_type_version获取image id|
+| parameter_group_id | 否 | String |创建cluster  parameter group id|
+| service_code |   否     | String |  产品名称 |
+| user_port |   否     | Int |  服务端口 |
+| visible |   否     | Int |  是否可见，2：不可见，1或其他：可见 |
+| host_machine_group | 否 | []String | 期待在哪些机型上创建 |
+| dryRun | 否 | String |检查您是否具有该操作所需的权限，但实际上并没有发出真正的请求。如果您有该操作所需的权限，请求将返回DryRunOperation，否则将返回UnAuthorizedOperation。|
+| instances[n].user_vpc_id | 是 | String | vpc id |
+| instances[n].user_subnet_id | 是 | String | 子网ID |
+| instances[n].flavor_id | 是 | String | flavor id |
+| instances[n].availability_zone | 是 | String | nova可用区 |
+| instances[n].host_machine_ip | 否 | String | 指定物理机IP |
+| instances[n].volume_type | 否 | String | 云硬盘时填写，云硬盘类型：ssd，nvme |
+| instances[n].volume_size | 否 | Int | 云硬盘时填写，云硬盘大小，单位G，步长：10，范围10-1000 |
+| instances[n].encrypted | 否 | Int | 云硬盘时填写，是否加密，0：不加密，1：加密 |
+
+- 返回值
+
+| 参数名称 | 类型 | 描述 |
+| :--- | :--- | :--- |
+| id | String | 计费类型ID(即gid) |
+| requestId | String | 用户请求request id（唯一性问题需要跟中间层确认） |
+| status | String | 实例状态 |
+
+
+#### 示例
+##### http body
+```json
+{
+  "id":"mysql-36unntz5my",
+  "name":"mysql-test",
+  "dryRun":"false",
+  "rds_type":"MSS",
+  "rds_type_version":"5.6",
+  "parameter_group_id": "mysql-pg-xxxxxxx",
+  "user_port": 5432,
+  "instances":[
+  {
+    "user_vpc_id":"vpc-lz757fa4xk",
+    "user_subnet_id":"subnet-0zuvx94tx6",
+    "flavor_id":"db.mysql.s1.micro.20",
+    "availability_zone":"prod_bj_02",
+    "volume_type": "ssd",
+    "volume_size": 100,
+    "encrypted": 1,
+    "host_machine_ip":"10.226.138.106"
+  },
+  {
+    "user_vpc_id":"vpc-2y757fa4xk",
+    "user_subnet_id":"subnet-1auvx94tx6",
+    "flavor_id":"db.mysql.s1.micro.20",
+    "availability_zone":"prod_bj_03",
+    "volume_type": "ssd",
+    "volume_size": 100,
+    "encrypted": 1,
+    "host_machine_ip":"10.226.138.105"
+  }
+]
+}
+```
+
+
+
+
 curl -i -X GET \
  http://127.0.0.1:7001/v1.0/instances/xxx-123123\
  -H 'X-Pin: abc' \

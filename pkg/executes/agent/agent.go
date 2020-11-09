@@ -5,9 +5,9 @@ import (
 	"Infinite_train/pkg/agent/context"
 	"Infinite_train/pkg/agent/cron"
 	logCommonConfig "Infinite_train/pkg/common/config"
-	"Infinite_train/pkg/common/utils"
 	"Infinite_train/pkg/common/utils/linux"
 	"Infinite_train/pkg/common/utils/log/golog"
+	"Infinite_train/pkg/common/utils/version"
 	"flag"
 	"fmt"
 	"os"
@@ -17,7 +17,7 @@ import (
 	"time"
 )
 
-func Main(versionInfo *utils.VersionInfo) {
+func Main(versionInfo *version.VersionInfo) {
 
 	defer func() {
 		if err := recover(); err != nil {
@@ -35,7 +35,7 @@ func Main(versionInfo *utils.VersionInfo) {
 	flag.Parse()
 
 	if isShowVersion {
-		utils.ShowVersion(versionInfo, banner)
+		version.ShowVersion(versionInfo, banner)
 		return
 	}
 

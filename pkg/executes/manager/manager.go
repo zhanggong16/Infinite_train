@@ -3,10 +3,10 @@ package manager
 import (
 	logCommonConfig "Infinite_train/pkg/common/config"
 	"Infinite_train/pkg/common/rpc"
-	"Infinite_train/pkg/common/utils"
 	"Infinite_train/pkg/common/utils/linux"
 	"Infinite_train/pkg/common/utils/log/golog"
 	"Infinite_train/pkg/common/utils/mysql"
+	"Infinite_train/pkg/common/utils/version"
 	"Infinite_train/pkg/manager/api/restful"
 	rpcService "Infinite_train/pkg/manager/api/rpc"
 	"Infinite_train/pkg/manager/config"
@@ -25,7 +25,7 @@ import (
 	"time"
 )
 
-func Main(versionInfo *utils.VersionInfo) {
+func Main(versionInfo *version.VersionInfo) {
 
 	defer func() {
 		if err := recover(); err != nil {
@@ -43,7 +43,7 @@ func Main(versionInfo *utils.VersionInfo) {
 	flag.Parse()
 
 	if isShowVersion {
-		utils.ShowVersion(versionInfo, banner)
+		version.ShowVersion(versionInfo, banner)
 		return
 	}
 
