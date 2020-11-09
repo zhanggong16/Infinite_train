@@ -2,6 +2,7 @@ package linux
 
 import (
 	"Infinite_train/pkg/common/utils/log/golog"
+	"bytes"
 	"github.com/juju/errors"
 	"os/exec"
 	"reflect"
@@ -23,12 +24,13 @@ func Exec(requestID, cmd string) (string, error) {
 
 func ExecWithTimeout(requestID, cmd string, timeout time.Duration) (string, error) {
 	//golog.Infof(requestID, "Exec with timeout cmd=[%s]", cmd)
+	var out bytes.Buffer
 	runningCmd := exec.Command("/bin/bash", "-c", cmd)
-	out, err := runningCmd.Output()
+	runningCmd.Stdout = &out
+	err := runningCmd.Start()
 	if err != nil {
 		return "", err
 	}
-	runningCmd.Start()
 
 	result := make(chan error, 1)
 	go func() {
@@ -37,7 +39,7 @@ func ExecWithTimeout(requestID, cmd string, timeout time.Duration) (string, erro
 
 	select {
 	case t := <-result:
-		return strings.TrimRight(string(out), "\n"), t
+		return strings.TrimSpace(string(bytes.TrimRight(out.Bytes(), "\x00"))), t
 	case <-time.After(time.Millisecond * timeout):
 		runningCmd.Process.Signal(syscall.SIGINT)
 		time.Sleep(time.Second)
