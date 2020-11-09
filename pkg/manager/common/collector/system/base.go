@@ -23,16 +23,15 @@ type CollectSystemBase interface {
 	perform() (*ResultBaseStruct, error)
 }
 
-func Run(BaseModel *BaseStruct) (result *ResultBaseStruct, err error) {
-	baseModel := BaseModel
+func Run(baseStruct *BaseStruct) (result *ResultBaseStruct, err error) {
 	var cs CollectSystemBase
-	switch baseModel.SystemMethod {
+	switch baseStruct.SystemMethod {
 	case constant.CollectorSystemMethodAnsible:
-		cs = &Ansible{BaseStruct: baseModel}
+		cs = &Ansible{BaseStruct: baseStruct}
 	case constant.CollectorSystemMethodAgent:
-		cs = &Agent{BaseModel: baseModel}
+		cs = &Agent{BaseStruct: baseStruct}
 	default:
-		cs = &Ansible{BaseStruct: baseModel}
+		cs = &Ansible{BaseStruct: baseStruct}
 	}
 
 	result, err = cs.perform()
