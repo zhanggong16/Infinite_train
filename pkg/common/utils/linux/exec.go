@@ -6,11 +6,12 @@ import (
 	"os/exec"
 	"reflect"
 	"strings"
+	"syscall"
 	"time"
 )
 
-func Exec(cmd string) (string, error) {
-	//golog.Debugf("cmd", "Exec cmd=[%s]", cmd)
+func Exec(requestID, cmd string) (string, error) {
+	golog.Infof(requestID, "Exec cmd=[%s]", cmd)
 	out, err := exec.Command("/bin/bash", "-c", cmd).Output()
 	if err != nil {
 		return "", err
@@ -20,7 +21,33 @@ func Exec(cmd string) (string, error) {
 	return cnt, nil
 }
 
-func ExecWithPolling(requestID, cmd string, interval, timeout time.Duration, condition interface{}, args interface{}) error {
+func ExecWithTimeout(requestID, cmd string, timeout time.Duration) (string, error) {
+	//golog.Infof(requestID, "Exec with timeout cmd=[%s]", cmd)
+	runningCmd := exec.Command("/bin/bash", "-c", cmd)
+	out, err := runningCmd.Output()
+	if err != nil {
+		return "", err
+	}
+	runningCmd.Start()
+
+	result := make(chan error, 1)
+	go func() {
+		result <- runningCmd.Wait()
+	}()
+
+	select {
+	case t := <-result:
+		return strings.TrimRight(string(out), "\n"), t
+	case <-time.After(time.Millisecond * timeout):
+		runningCmd.Process.Signal(syscall.SIGINT)
+		time.Sleep(time.Second)
+		runningCmd.Process.Kill()
+		err = errors.New("Polling timeout")
+		return "", err
+	}
+}
+
+func ExecWithPollingCondition(requestID, cmd string, interval, timeout time.Duration, condition interface{}, args interface{}) error {
 	// 检查传入参数condition是否符合规范
 	typ := reflect.TypeOf(condition)
 	if typ.Kind() != reflect.Func {

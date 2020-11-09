@@ -4,6 +4,7 @@ import "time"
 
 //PollingConfig ...
 type PollingConfig struct {
+	PollingTimeoutMin			 time.Duration `toml:"polling_timeout_min"`
 	PollingTimeoutLow            time.Duration `toml:"polling_timeout_low"`
 	PollingTimeoutMedium         time.Duration `toml:"polling_timeout_medium"`
 	PollingTimeoutHigh           time.Duration `toml:"polling_timeout_high"`

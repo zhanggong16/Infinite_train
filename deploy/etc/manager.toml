@@ -59,6 +59,7 @@ retry_interval_medium = 6
 retry_interval_high = 15
 
 [polling]
+polling_timeout_min = 3
 polling_timeout_low = 10
 polling_timeout_medium = 70
 polling_timeout_high = 150
