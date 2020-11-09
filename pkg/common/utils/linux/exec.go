@@ -40,7 +40,7 @@ func ExecWithTimeout(requestID, cmd string, timeout time.Duration) (string, erro
 	select {
 	case t := <-result:
 		return strings.TrimSpace(string(bytes.TrimRight(out.Bytes(), "\x00"))), t
-	case <-time.After(time.Millisecond * timeout):
+	case <-time.After(time.Second * timeout):
 		runningCmd.Process.Signal(syscall.SIGINT)
 		time.Sleep(time.Second)
 		runningCmd.Process.Kill()

@@ -57,7 +57,7 @@ func AsyncService() chan string {
 
 func main() {
 
-	s, err := linux.ExecWithTimeout("1111","ping www.baidu.com", 5)
+	s, err := linux.ExecWithTimeout("1111","ping 172.17.0.12 -c", 5)
 	fmt.Printf("result %s, error %s", s, err.Error())
 
 	/*select {
