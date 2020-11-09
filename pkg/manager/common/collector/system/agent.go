@@ -1,15 +1,15 @@
 package system
 
 type Agent struct {
-	*BaseModel
+	*BaseStruct
 }
 
-func (agent *Agent) perform() (*ResultBaseModel, error) {
+func (agent *Agent) perform() (*ResultBaseStruct, error) {
 	return agent.collectSystemMonitorData()
 }
 
-func (agent *Agent) collectSystemMonitorData() (*ResultBaseModel, error) {
-	result := new(ResultBaseModel)
+func (agent *Agent) collectSystemMonitorData() (*ResultBaseStruct, error) {
+	result := new(ResultBaseStruct)
 	result.CPULoad = 2.1
 	return result, nil
 }
