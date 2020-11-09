@@ -11,7 +11,7 @@ func TestCon() {
 	requestId := uuid.NewV4().String()
 	golog.Infof(requestId, "start TestCon per 1 min")
 	// step 1，采集
-	collectSystemModel := &system.BaseModel{InstanceIP: "10.0.0.1", SystemMethod: constant.CollectorSystemMethodAnsible}
+	collectSystemModel := &system.BaseStruct{InstanceIP: "10.0.0.1", SystemMethod: constant.CollectorSystemMethodAnsible}
 	systemData, _ := system.Run(collectSystemModel)
 	golog.Infof(requestId, "collect system monitor data: [%s]", systemData.CPULoad)
 
