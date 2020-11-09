@@ -2,7 +2,7 @@ package config
 
 import "time"
 
-//PollingConfig ...
+// PollingConfig ...
 type PollingConfig struct {
 	PollingTimeoutMin			 time.Duration `toml:"polling_timeout_min"`
 	PollingTimeoutLow            time.Duration `toml:"polling_timeout_low"`
@@ -18,7 +18,7 @@ type PollingConfig struct {
 	PollingCreateBackupInterval  time.Duration `toml:"polling_create_backup_interval"`
 }
 
-//RetryConfig ...
+// RetryConfig ...
 type RetryConfig struct {
 	RetryCountLow       int           `toml:"retry_count_low"`
 	RetryCountMedium    int           `toml:"retry_count_medium"`

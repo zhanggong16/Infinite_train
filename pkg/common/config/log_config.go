@@ -14,7 +14,7 @@ type LogConfig struct {
 	RotateFileCount uint64 `toml:"rotate_file_count, omitempty"`
 }
 
-//InitConfig is to init global log module.
+// InitConfig is to init global log module.
 func InitConfig(logConfigs map[string]*LogConfig) error {
 	golog.GlobalSysLoggers = golog.GlobalSysLoggers[:0]
 	for logKey, logConfig := range logConfigs {

@@ -3,7 +3,7 @@ package controller
 import (
 	"Infinite_train/pkg/common/constant"
 	"Infinite_train/pkg/common/utils/log/golog"
-	"Infinite_train/pkg/manager/common/collector/system"
+	"Infinite_train/pkg/manager/service/collector/system"
 	"github.com/satori/go.uuid"
 )
 

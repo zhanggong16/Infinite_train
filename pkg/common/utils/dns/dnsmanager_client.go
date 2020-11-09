@@ -17,7 +17,7 @@ import (
 	"time"
 )
 
-//DNS obj
+// DNS obj
 type DNS struct {
 	DNSApiURL      string `json:"dna_api_url"`
 	Prefix         string `json:"prefix"`
@@ -42,7 +42,7 @@ type DNS struct {
 	AuthERP     string `json:"aurh_erp"`
 }
 
-//DomainReserve ...
+// DomainReserve ...
 type DomainReserve struct {
 	Domain      string `json:"domain"`
 	Network     int    `json:"network"`
@@ -54,14 +54,14 @@ type DomainReserve struct {
 	Auth        string `json:"auth"`
 }
 
-//DomainReserveResult ...
+// DomainReserveResult ...
 type DomainCommonResult struct {
 	AppCode   string `json:"appCode"`
 	ResStatus int    `json:"resStatus"`
 	ResMsg    string `json:"resMsg"`
 }
 
-//DomainBind ...
+// DomainBind ...
 type DomainBind struct {
 	Domain string             `json:"domain"`
 	Data   []ViewsRecordsData `json:"data"`
@@ -87,19 +87,19 @@ type DomainBindData struct {
 	Records []string `json:"records"`
 }
 
-//DomainCheckResultData ...
+// DomainCheckResultData ...
 type DomainCheckResultData struct {
 	Status int    `json:"status"`
 	Msg    string `json:"msg"`
 }
 
-//DomainCheckResult ...
+// DomainCheckResult ...
 type DomainCheckResult struct {
 	DomainCommonResult
 	Data DomainCheckResultData `json:"data"`
 }
 
-//DomainResult obj
+// DomainResult obj
 type DomainResult struct {
 	Status bool   `json:"status"`
 	Domain string `json:"domain"`
@@ -119,7 +119,7 @@ var networkMap = map[int]int{
 	PublicNetwork:          2,
 }
 
-//DNSConf obj
+// DNSConf obj
 type DNSConf struct {
 	DNSApiURL       string `toml:"dns_api_url"`
 	DNSDomainSuffix string `toml:"dns_domain_suffix"`
@@ -138,7 +138,7 @@ type DNSConf struct {
 	AuthERP     string `toml:"auth_erp"`
 }
 
-//NewCreateDNS api
+// NewCreateDNS api
 func NewDNSClient(dnsConf *DNSConf, networkType int) *DNS {
 	loc, _ := time.LoadLocation("Asia/Chongqing")
 	reqTime := time.Now().In(loc)
@@ -171,7 +171,7 @@ func NewDNSClient(dnsConf *DNSConf, networkType int) *DNS {
 	return dns
 }
 
-//CheckDomain is
+// CheckDomain is
 func (dns *DNS) CheckDomain(requestID, domain string) error {
 
 	var req *http.Request
@@ -228,7 +228,7 @@ func (dns *DNS) CheckDomain(requestID, domain string) error {
 	return nil
 }
 
-//PingDomain is
+// PingDomain is
 func (dns *DNS) PingDomain(requestID, domain string, ip string) error {
 	golog.Infof(requestID, "ping domain %s", domain)
 	cmd := exec.Command("ping", "-c", "3", domain)
@@ -249,7 +249,7 @@ func (dns *DNS) PingDomain(requestID, domain string, ip string) error {
 	return nil
 }
 
-//Binding api
+// Binding api
 func (dns *DNS) DomainReserve(requestID string, domain string) error {
 
 	newDomain := &DomainReserve{Domain: domain, Network: dns.NetworkType, Primary: dns.Primary, ProjectName: dns.ProjectName, ManageErp: dns.ManageERP, AppEnv: dns.AppEnv}
@@ -364,7 +364,7 @@ func (dns *DNS) DomainBind(requestID string, domain string, v4Ip, v6Ip string) e
 	return nil
 }
 
-//DomainDelete ...
+// DomainDelete ...
 func (dns *DNS) DomainDelete(requestID string, domain string) error {
 
 	var req *http.Request

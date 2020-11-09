@@ -52,7 +52,7 @@ func ErrorMessage(code StatusCode) string {
 	return statusText[code]
 }
 
-//GetHTTPCode is function to map logic response code and http code
+// GetHTTPCode is function to map logic response code and http code
 func (s *StatusCode) GetHTTPCode() int {
 	switch *s {
 	case ParamErrorCode, BindParamErrorCode, StatusMethodNotAllowedErrorCode:
