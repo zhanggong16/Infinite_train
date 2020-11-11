@@ -174,29 +174,6 @@ func listD(a string, d ...string) string {
 	return ""
 }
 
-func service() string {
-	time.Sleep(time.Millisecond * 50)
-	return "1 Done"
-}
-
-func otherTask() {
-	fmt.Println("2 working on something else")
-	time.Sleep(time.Millisecond * 100)
-	fmt.Println("2 Task is done")
-}
-
-func AsyncService() chan string {
-	//retCh := make(chan string)
-	retCh := make(chan string, 1)
-	go func() {
-		ret := service()
-		fmt.Println("1 returned result")
-		retCh <- ret
-		fmt.Println("1 service exit")
-	}()
-	return retCh
-}
-
 func main() {
 	//EmptyInterface("10")
 	defer func() {

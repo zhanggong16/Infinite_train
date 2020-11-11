@@ -21,6 +21,7 @@ errcheck:
 
 
 check:
+    # detect deadlock
 	@ go vet ./...
 
 
