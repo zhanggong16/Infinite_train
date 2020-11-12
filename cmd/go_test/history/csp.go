@@ -61,7 +61,7 @@ func dataReceiver(ch chan int, wg *sync.WaitGroup) {
 	default:
 		return false
 	}
-}
+}*/
 
 func cancle_1(cancelChan chan struct{}) {
 	cancelChan <- struct{}{}
@@ -69,7 +69,7 @@ func cancle_1(cancelChan chan struct{}) {
 
 func cancle_2(cancelChan chan struct{}) {
 	close(cancelChan)
-}*/
+}
 
 func isCancelled(ctx context.Context) bool {
 	select {
@@ -100,7 +100,7 @@ func main() {
 	time.Sleep(time.Second*1)
 	fmt.Println(count)*/
 
-	var mut sync.Mutex
+	/*var mut sync.Mutex
 	var wg sync.WaitGroup
 	count := 0
 	for i := 0; i < 5000; i++ {
@@ -115,9 +115,9 @@ func main() {
 		}()
 	}
 	wg.Wait()
-	fmt.Println(count)
+	fmt.Println(count)*/
 
-	/*//cancelChan := make(chan struct{}, 0)
+	//cancelChan := make(chan struct{}, 0)
 	ctx, cancel := context.WithCancel(context.Background())
 	for i:=0;i<5;i++ {
 		go func(i int, ctx context.Context) {
@@ -132,7 +132,7 @@ func main() {
 	}
 	cancel()
 	//cancle_2(cancelChan)
-	time.Sleep(time.Second*1)*/
+	time.Sleep(time.Second*1)
 
 	/*var wg sync.WaitGroup
 	ch := make(chan int)

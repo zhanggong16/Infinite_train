@@ -19,10 +19,10 @@ import (
 
 
 const (
-	mutexLocked = 1 << iota // mutex is locked
-	mutexWoken
-	mutexStarving
-	mutexWaiterShift = iota
+	mutexLocked = 1 << iota // mutex is locked	1
+	mutexWoken				// 2
+	mutexStarving			// 4
+	mutexWaiterShift = iota	// 3
 )
 
 type Counter struct {
