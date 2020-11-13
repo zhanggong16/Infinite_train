@@ -1,6 +1,6 @@
 package service
 
-import "Infinite_train/pkg/manager/api/request"
+import "Infinite_train/pkg/manager/api/restful/request"
 
 type InstancesServiceBase interface {
 	GetInstancesWithFilter(cc *request.CommonContext, id string) (string, error)

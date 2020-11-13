@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"Infinite_train/pkg/manager/api/request"
+	"Infinite_train/pkg/manager/api/restful/request"
 	"Infinite_train/pkg/manager/api/view"
 )
 

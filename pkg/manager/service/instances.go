@@ -2,7 +2,7 @@ package service
 
 import (
 	"Infinite_train/pkg/common/utils/log/golog"
-	"Infinite_train/pkg/manager/api/request"
+	"Infinite_train/pkg/manager/api/restful/request"
 )
 
 type InstancesService struct {
