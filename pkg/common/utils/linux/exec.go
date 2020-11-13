@@ -23,23 +23,39 @@ func Exec(requestID, cmd string) (string, error) {
 }
 
 func ExecWithTimeout(requestID, cmd string, timeout time.Duration) (string, error) {
-	golog.Infof(requestID, "Exec with timeout cmd=[%s], timeout [%s]", cmd, string(timeout))
-	var out bytes.Buffer
+	//golog.Infof(requestID, "Exec with timeout cmd=[%s], timeout [%s]", cmd, string(timeout))
+	execErrChan := make(chan error)
+	defer close(execErrChan)
+
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+
 	runningCmd := exec.Command("/bin/bash", "-c", cmd)
-	runningCmd.Stdout = &out
+	runningCmd.Stdout = &stdout
+	runningCmd.Stderr = &stderr
+
 	err := runningCmd.Start()
 	if err != nil {
 		return "", err
 	}
 
-	result := make(chan error, 1)
 	go func() {
-		result <- runningCmd.Wait()
+		execErrChan <- runningCmd.Wait()
 	}()
 
 	select {
-	case err = <-result:
-		return strings.TrimSpace(string(bytes.TrimRight(out.Bytes(), "\x00"))), err
+	case err = <-execErrChan:
+		if err != nil {
+			return "", err
+		} else {
+			stdoutStr := strings.TrimSpace(string(bytes.TrimRight(stdout.Bytes(), "\x00")))
+			stderrStr := strings.TrimSpace(string(bytes.TrimRight(stderr.Bytes(), "\x00")))
+			if stderrStr != "" {
+				return stderrStr, nil
+			} else {
+				return stdoutStr, nil
+			}
+		}
 	case <-time.After(time.Second * timeout):
 		runningCmd.Process.Signal(syscall.SIGINT)
 		time.Sleep(time.Second)
