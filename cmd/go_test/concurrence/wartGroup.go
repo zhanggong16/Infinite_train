@@ -30,7 +30,7 @@ func (c *Counter2) Count() uint64 {
 	return c.counter
 }
 
-func main() {
+func main_wg() {
 	c := new(Counter2)
 	c.counter = 0
 

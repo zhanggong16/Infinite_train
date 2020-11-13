@@ -234,7 +234,7 @@ func (dns *DNS) PingDomain(requestID, domain string, ip string) error {
 	cmd := exec.Command("ping", "-c", "3", domain)
 	out, err := cmd.Output()
 	if err != nil {
-		errMsg := fmt.Sprintf("domain %s not avaiable, error: %", domain, err)
+		errMsg := fmt.Sprintf("domain %s not avaiable, error: %s", domain, err)
 		err = errors.New(errMsg)
 		golog.Warnf(requestID, err.Error())
 		return err

@@ -78,12 +78,7 @@ func isCancelled(cancelChan chan struct{}) bool {
 	}
 }*/
 
-func main() {
-
-
-
-
-
+func main_csp2() {
 	/*cancelChan := make(chan struct{}, 0)
 	for i:=0;i<5;i++ {
 		go func(i int, cancelCh chan struct{}) {

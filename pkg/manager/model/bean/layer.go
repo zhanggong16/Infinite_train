@@ -20,7 +20,7 @@ type DBBeanInterface interface {
 	TxCommit(session *xorm.Session) error
 	TxInsertRecord(txSession *xorm.Session, requestId, tableName string, keyValues map[string]interface{}) error
 	TxUpdateRecord(txSession *xorm.Session, requestId, tableName string, setKeyValue, condition map[string]interface{}) (int64, error)
-	FindRecordsForFilterGroups(requestId, tableName string, condition *bean.FilterGroups, rowsSlices interface{}) (total int64, err error)
+	FindRecordsForFilterGroups(requestId, tableName string, condition *FilterGroups, rowsSlices interface{}) (total int64, err error)
 	DeleteRecord(requestId, tableName string, condition map[string]interface{}) (int64, error)
 }
 
