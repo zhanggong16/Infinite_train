@@ -3,8 +3,7 @@ package restful
 import (
 	"Infinite_train/pkg/common/utils/log/golog"
 	"Infinite_train/pkg/common/utils/ump"
-	"Infinite_train/pkg/manager/api/common"
-	"Infinite_train/pkg/manager/api/request"
+	"Infinite_train/pkg/manager/api/restful/request"
 	"Infinite_train/pkg/manager/config"
 	"fmt"
 	"github.com/labstack/echo"
@@ -35,7 +34,7 @@ func NewServer(config *config.Config) (*Server, error) {
 	s := new(Server)
 	s.webAddr = config.WebAddr
 	s.Echo = echo.New()
-	s.Validate = common.NewCustomValidator()
+	s.Validate = NewCustomValidator()
 	s.Region = config.ManagerConfig.Region
 	s.AdminRoles = config.ManagerConfig.AdminRoles
 	return s, nil

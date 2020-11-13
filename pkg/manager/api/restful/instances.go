@@ -3,7 +3,7 @@ package restful
 import (
 	"Infinite_train/pkg/common/constant"
 	"Infinite_train/pkg/common/utils/log/golog"
-	"Infinite_train/pkg/manager/api/request"
+	"Infinite_train/pkg/manager/api/restful/request"
 	"Infinite_train/pkg/manager/api/view"
 	"Infinite_train/pkg/manager/controller"
 	"encoding/json"

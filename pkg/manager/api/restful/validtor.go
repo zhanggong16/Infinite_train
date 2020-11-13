@@ -1,4 +1,4 @@
-package common
+package restful
 
 import (
 	"Infinite_train/pkg/common/constant"

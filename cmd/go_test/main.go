@@ -2,86 +2,47 @@ package main
 
 import (
 	"fmt"
-	"reflect"
 	"sync"
 	"time"
 )
 
-type Singleton struct {
+// waitGroup，现在有一个 goroutine A 在检查点（checkpoint）等待一组 goroutine 全部完成，如果在执行任务的这些 goroutine 还没全部完成，那么 goroutine A 就会阻塞在检查点，直到所有 goroutine 都完成后才能继续执行。
+
+// Add，用来设置 WaitGroup 的计数值；放在go外面，与Done成对出现。
+// Done，用来将 WaitGroup 的计数值减 1，其实就是调用了 Add(-1)；
+// Wait，调用这个方法的 goroutine 会一直阻塞，直到 WaitGroup 的计数值变为 0
+
+
+type Counter struct {
+	mu 		sync.Mutex
+	counter	uint64
 }
 
-var singleInstance *Singleton
-var once sync.Once
-
-func GetSingletonObj() *Singleton {
-	once.Do(func() {
-		fmt.Println("Create Obj")
-		singleInstance = new(Singleton)
-	})
-	return singleInstance
+func (c *Counter) insr() {
+	c.mu.Lock()
+	c.counter++
+	c.mu.Unlock()
 }
 
-// 只运行一次就返回
-func runTask(id int) string {
-	time.Sleep(time.Millisecond * 10)
-	return fmt.Sprintf("The result is from %d", id)
-}
-
-func FirstResponse() string {
-	numOfRunner := 10
-	//ch := make(chan string) 存在协程内存泄露
-	ch := make(chan string, numOfRunner)
-	for i := 0; i < numOfRunner; i++ {
-		go func(i int) {
-			ret := runTask(i)
-			ch <- ret
-		}(i)
-	}
-	return <-ch
-}
-
-func AllResponse() string {
-	numOfRunner := 10
-	ch := make(chan string, numOfRunner)
-	for i := 0; i < numOfRunner; i++ {
-		go func(i int) {
-			ret := runTask(i)
-			ch <- ret
-		}(i)
-	}
-
-
-	finalRet := ""
-
-	for j := 0; j < numOfRunner; j++ {
-		finalRet += <-ch + "\n"
-	}
-	return finalRet
-}
-
-func t(p interface{}) {
-	rt := reflect.TypeOf(p)
-	fmt.Printf("%T", rt)
+func (c *Counter) Count() uint64 {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	return c.counter
 }
 
 func main() {
-	t(1)
+	c := new(Counter)
+	c.counter = 0
 
-	/*fmt.Println("before:", runtime.NumGoroutine())
-	fmt.Println(AllResponse())
-	time.Sleep(time.Second * 1)
-	fmt.Println("after:", runtime.NumGoroutine())*/
-
-	/*var wg sync.WaitGroup
-	for i:=0;i<10;i++{
-		wg.Add(1)
+	var wg sync.WaitGroup
+	wg.Add(10)
+	for i:=0;i<10;i++ {
 		go func() {
 			defer wg.Done()
-			obj := GetSingletonObj()
-			fmt.Println(unsafe.Pointer(obj))
+			time.Sleep(time.Second)
+			c.insr()
 		}()
 	}
-	wg.Wait()*/
-
-
+	wg.Wait()
+	fmt.Println(c.Count())
 }

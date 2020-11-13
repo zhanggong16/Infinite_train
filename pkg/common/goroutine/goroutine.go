@@ -36,7 +36,7 @@ type CollectSystemData struct {
 
 func (c *CollectSystemData)AllResponse(runTaskFunc interface{}, args interface{}) error {
 	numOfRunner := 3
-	timeout := 1
+	timeout := 2
 	ch := make(chan string, numOfRunner)
 	for i := 0; i < numOfRunner; i++ {
 		go func() {

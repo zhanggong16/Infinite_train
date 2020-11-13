@@ -27,4 +27,6 @@ func TestAllResponse(t *testing.T) {
 	t.Log(c.Result)
 	time.Sleep(time.Second * 1)
 	t.Log("after:", runtime.NumGoroutine())
+	time.Sleep(time.Second * 3)
+	t.Log("final:", runtime.NumGoroutine())
 }
