@@ -117,7 +117,7 @@ func main() {
 	wg.Wait()
 	fmt.Println(count)*/
 
-	cancelChan := make(chan struct{}, 0)
+	//cancelChan := make(chan struct{}, 0)
 	ctx, cancel := context.WithCancel(context.Background())
 	for i:=0;i<5;i++ {
 		go func(i int, ctx context.Context) {
