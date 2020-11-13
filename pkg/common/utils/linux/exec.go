@@ -3,6 +3,7 @@ package linux
 import (
 	"Infinite_train/pkg/common/utils/log/golog"
 	"bytes"
+	"fmt"
 	"github.com/juju/errors"
 	"os/exec"
 	"reflect"
@@ -23,9 +24,9 @@ func Exec(requestID, cmd string) (string, error) {
 }
 
 func ExecWithTimeout(requestID, cmd string, timeout time.Duration) (string, error) {
-	//golog.Infof(requestID, "Exec with timeout cmd=[%s], timeout [%s]", cmd, string(timeout))
+	golog.Infof(requestID, "Exec with timeout cmd=[%s], timeout [%s]", cmd, string(timeout))
 	execErrChan := make(chan error)
-	defer close(execErrChan)
+	//defer close(execErrChan)
 
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
@@ -60,7 +61,8 @@ func ExecWithTimeout(requestID, cmd string, timeout time.Duration) (string, erro
 		runningCmd.Process.Signal(syscall.SIGINT)
 		time.Sleep(time.Second)
 		runningCmd.Process.Kill()
-		err = errors.New("Polling timeout")
+		errMsg := fmt.Sprintf("Polling timeout, cmd [%s], timeout [%s]", cmd, timeout)
+		err = errors.New(errMsg)
 		return "", err
 	}
 }

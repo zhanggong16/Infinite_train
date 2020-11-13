@@ -8,5 +8,10 @@ import (
 func main() {
 	cmd := "ls"
 	ret, err := linux.ExecWithTimeout("0", cmd, 1)
-	fmt.Printf("ret [%s], err [%s]", ret, err.Error())
+	if err != nil {
+		fmt.Printf("ret [%s], err [%s]", ret, err.Error())
+	} else {
+		fmt.Printf("ret [%s]", ret)
+	}
+
 }
