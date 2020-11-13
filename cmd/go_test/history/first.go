@@ -174,7 +174,7 @@ func listD(a string, d ...string) string {
 	return ""
 }
 
-func main() {
+func main_first() {
 	//EmptyInterface("10")
 	defer func() {
 		if err := recover(); err != nil {
