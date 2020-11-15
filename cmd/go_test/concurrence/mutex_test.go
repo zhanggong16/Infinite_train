@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"sync"
 	"sync/atomic"
+	"testing"
 	"unsafe"
 )
 
@@ -71,7 +72,7 @@ func (c *Counter) count() uint64 {
 	return c.Count
 }
 
-func main() {
+func TestMutex1(t *testing.T) {
 
 	var counter Counter
 	var wg sync.WaitGroup

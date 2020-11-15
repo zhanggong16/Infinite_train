@@ -3,6 +3,7 @@ package concurrence
 import (
 	"fmt"
 	"sync"
+	"testing"
 	"time"
 )
 
@@ -30,7 +31,7 @@ func (c *Counter2) Count() uint64 {
 	return c.counter
 }
 
-func main_wg() {
+func TestWartGroup(t *testing.T) {
 	c := new(Counter2)
 	c.counter = 0
 

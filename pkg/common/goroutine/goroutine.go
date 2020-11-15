@@ -1,6 +1,7 @@
 package goroutine
 
 import (
+	"Infinite_train/pkg/common/utils/log/golog"
 	"fmt"
 	"runtime"
 	"strconv"
@@ -19,6 +20,24 @@ func GetGoroutineID() int {
 	}
 	return id
 }
+
+//InnerStartAsyncTask ...
+func InnerStartAsyncTask(op func() error, taskDescription string) {
+	go func() {
+		defer func() {
+			if err := recover(); err != nil {
+				stack := make([]byte, 1<<20)
+				stack = stack[:runtime.Stack(stack, false)]
+				golog.Errorf("0", taskDescription+" go routine panic, err:%s, stack:%s", err, stack)
+			}
+		}()
+		err := op()
+		if err != nil {
+			golog.Errorf("0", taskDescription+" %s error: %s", err.Error())
+		}
+	}()
+}
+
 
 /*func runTask(id int) string {
 	time.Sleep(time.Second * time.Duration(id))
@@ -56,27 +75,3 @@ func (c *CollectSystemData)AllResponse(runTaskFunc interface{}, args interface{}
 	}
 	return nil
 }
-
-
-/*func (cd *CollectDataBase)AllResponse(taskFunc, args interface{}, numOfRunner int, timeout time.Duration) (string, error) {
-	ch := make(chan string, numOfRunner)
-	finalRet := ""
-	for i := 0; i < numOfRunner; i++ {
-		go func() {
-			ret, _ := taskFunc.(func(interface{}) (string, error))(args)
-
-		}()
-	}
-	select {
-	case ch<-ret:
-		for j := 0; j < numOfRunner; j++ {
-			finalRet += <-ch + "\n"
-		}
-		return finalRet, nil
-	case <-time.After(time.Second * timeout):
-		err := errors.New("timeout")
-		return "",
-	}
-}
-*/
-
