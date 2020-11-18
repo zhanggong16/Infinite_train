@@ -12,7 +12,7 @@ import (
 var scheduler = gocron.NewScheduler(time.UTC)
 
 func registerCron() {
-	scheduler.Every(context.Manager.Config.CronInterval.IntervalEveryMinute).Seconds().Do(controller.TestCon)
+	scheduler.Every(context.Manager.Config.CronInterval.IntervalEveryMinute).Seconds().Do(controller.MetricCollectorTask)
 }
 
 func Start() (chan struct{}, error) {
@@ -26,6 +26,7 @@ func Start() (chan struct{}, error) {
 	return exitCh, nil*/
 }
 
+// 当有多个manager，cron任务需要有抢锁机制
 func Run(exitCh <-chan struct{}) {
 	r := rand.New(rand.NewSource(time.Now().UnixNano()))
 	restTime := 60
