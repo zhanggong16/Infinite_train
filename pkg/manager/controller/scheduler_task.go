@@ -15,6 +15,7 @@ func MetricCollectorTask(lock lock2.Lock) {
 	// 内部抢锁执行
 	if ok := lock.GetLock(); !ok {
 		golog.Warnf(requestId, lock2.GetSchedulerLockFailed)
+		return
 	} else {
 		defer lock.ReleaseLock()
 	}
@@ -27,4 +28,5 @@ func MetricCollectorTask(lock lock2.Lock) {
 	time.Sleep(time.Second*120)
 	// step 3, 存储
 	golog.Infof(requestId, "finish metric collector task")
+	return
 }
