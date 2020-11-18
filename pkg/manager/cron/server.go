@@ -1,6 +1,7 @@
 package cron
 
 import (
+	lock2 "Infinite_train/pkg/common/utils/lock"
 	"Infinite_train/pkg/manager/context"
 	"Infinite_train/pkg/manager/controller"
 	"github.com/go-co-op/gocron"
@@ -11,8 +12,10 @@ import (
 
 var scheduler = gocron.NewScheduler(time.UTC)
 
+var metricCollectorLock lock2.Lock
+
 func registerCron() {
-	scheduler.Every(context.Manager.Config.CronInterval.IntervalEveryMinute).Seconds().Do(controller.MetricCollectorTask)
+	scheduler.Every(context.Manager.Config.CronInterval.IntervalEveryMinute).Seconds().Do(controller.MetricCollectorTask, metricCollectorLock)
 }
 
 func Start() (chan struct{}, error) {

@@ -9,11 +9,10 @@ import (
 	"time"
 )
 
-func MetricCollectorTask() {
+func MetricCollectorTask(lock lock2.Lock) {
 	requestId := uuid.NewV4().String()
 	golog.Infof(requestId, "start TestCon per 1 min")
 	// 内部抢锁执行
-	var lock lock2.Lock
 	if ok := lock.GetLock(); !ok {
 		golog.Warnf(requestId, lock2.GetSchedulerLockFailed)
 	} else {
