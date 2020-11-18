@@ -80,7 +80,7 @@ func isCancelled(ctx context.Context) bool {
 	}
 }
 
-func main() {
+func main_csp() {
 	/*for i:=0;i<10;i++ {
 		go func(i int){
 			fmt.Println(i)
