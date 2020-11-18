@@ -12,7 +12,7 @@ import (
 
 var scheduler = gocron.NewScheduler(time.UTC)
 
-var metricCollectorLock lock2.Lock
+var metricCollectorLock *lock2.Lock
 
 func registerCron() {
 	scheduler.Every(context.Manager.Config.CronInterval.IntervalEveryMinute).Seconds().Do(controller.MetricCollectorTask, metricCollectorLock)
