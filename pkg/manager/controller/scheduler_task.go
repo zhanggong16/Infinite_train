@@ -2,22 +2,22 @@ package controller
 
 import (
 	"Infinite_train/pkg/common/constant"
-	lock2 "Infinite_train/pkg/common/utils/lock"
+	"Infinite_train/pkg/common/utils/lock"
 	"Infinite_train/pkg/common/utils/log/golog"
 	"Infinite_train/pkg/manager/service/metric_collector/system"
 	"github.com/satori/go.uuid"
 	"time"
 )
 
-func MetricCollectorTask(lock *lock2.Lock) {
+func MetricCollectorTask(lock *lock.Mutex) {
 	requestId := uuid.NewV4().String()
 	golog.Infof(requestId, "start TestCon per 1 min")
 	// 内部抢锁执行
-	if ok := lock.GetLock(); !ok {
-		golog.Warnf(requestId, lock2.GetSchedulerLockFailed)
+	if ok := lock.TryLock(); !ok {
+		golog.Warnf(requestId, "try get lock failed, skip this task")
 		return
 	} else {
-		defer lock.ReleaseLock()
+		defer lock.Unlock()
 	}
 
 	// step 1，采集
