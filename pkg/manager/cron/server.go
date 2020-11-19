@@ -11,7 +11,6 @@ import (
 )
 
 var scheduler = gocron.NewScheduler(time.UTC)
-
 var metricCollectorLock lock2.Lock
 
 func registerCron() {

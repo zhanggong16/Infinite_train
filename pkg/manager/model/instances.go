@@ -2,7 +2,7 @@ package model
 
 import "time"
 
-type Table1 struct {
+type Instances struct {
 	Id				int64     `xorm:"not null pk autoincr BIGINT(20)"`
 	Gid				string    `xorm:"not null unique VARCHAR(36)"`
 	Uuid			string    `xorm:"not null unique VARCHAR(36)"`

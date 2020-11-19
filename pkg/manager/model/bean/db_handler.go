@@ -141,8 +141,8 @@ func convertQueryInfo(filters []*FiltersPara) (string, []interface{}) {
 
 func (bn *DbHandler) nameToStruct(tableStructName string) (interface{}, error) {
 	switch tableStructName {
-	case "Table1":
-		return new(model.Table1), nil
+	case "Instances":
+		return new(model.Instances), nil
 	default:
 		err := errors.New("invalid table name: " + tableStructName)
 		return nil, err
