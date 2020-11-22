@@ -9,10 +9,12 @@ const (
 	InstanceStateAgentError				= "AGENT_ERROR"				// agent通信异常
 	InstanceStateActive					= "ACTIVE"
 
-	CollectorSystemMethodAnsible		= "ansible"		// 通过ansible的方式连接目标实例
-	CollectorSystemMethodAgent			= "agent"		// 通过部署agent的方式连接目标实例
+	MetricTypeMySQL 					= "mysql"
+	MetricTypeLinux						= "linux"
 
+	MetricCollectorMethodMySQLConnect 	= "mysqlConnect"
+	MetricCollectorMethodSystemAgent 	= "agent"
+	MetricCollectorMethodMySQLAnsible 	= "ansible"
 
-
-	InstanceNameRegEx = "^[A-Za-z0-9_\u4e00-\u9fa5_\\-_]{2,32}$"
+	InstanceNameRegEx 					= "^[A-Za-z0-9_\u4e00-\u9fa5_\\-_]{2,32}$"
 )

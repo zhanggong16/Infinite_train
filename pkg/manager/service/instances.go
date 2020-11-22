@@ -15,3 +15,4 @@ func (is *InstancesService) GetInstancesWithFilter(cc *request.CommonContext, id
 
 	return id, nil
 }
+
