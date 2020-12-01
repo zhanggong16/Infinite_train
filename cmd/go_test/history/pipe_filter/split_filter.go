@@ -5,6 +5,8 @@ import (
 	"strings"
 )
 
+var SplitFilterWong = errors.New("input mistake")
+
 type SplitFilter struct {
 	delimiter string
 }
@@ -13,9 +15,8 @@ func NewSplitFilter(delimiter string) *SplitFilter {
 	return &SplitFilter{delimiter}
 }
 
-var SplitFilterWong = errors.New("input mistake")
-
 func (sf *SplitFilter) Process(data Request) (Response, error) {
+	// 第一步数据验证
 	str, ok := data.(string)
 	if !ok {
 		return nil, SplitFilterWong

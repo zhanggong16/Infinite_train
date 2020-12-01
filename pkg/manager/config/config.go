@@ -5,9 +5,9 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/BurntSushi/toml"
 	"time"
 )
-import "github.com/BurntSushi/toml"
 
 type ManagerCfg struct {
 	IPPrefix     string   `toml:"ip_prefix"`
@@ -34,7 +34,7 @@ type DataBase struct {
 }
 
 type CronInterval struct {
-	IntervalEveryMinute		uint64 `toml:"interval_every_minute"`
+	IntervalEveryMinute uint64 `toml:"interval_every_minute"`
 }
 
 type Config struct {
