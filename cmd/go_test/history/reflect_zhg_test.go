@@ -46,17 +46,24 @@ func TestReflect(t *testing.T) {
 		Name:       "Mike",
 		Age:        30,
 	}
-	fmt.Println(reflect.ValueOf(*e).FieldByName("Name"))
+	typeInfo := reflect.TypeOf(*e)
+	num := typeInfo.NumField()
+	for i := 0;i<num;i++ {
+		t.Log(typeInfo.Field(i).Name, )
+
+	}
+
+	//fmt.Println(reflect.ValueOf(*e).FieldByName("Name"))
 	//fmt.Println((reflect.ValueOf(*e)).Elem())
 	if nameField, ok := reflect.TypeOf(*e).FieldByName("Name"); !ok {
 		fmt.Println("not found")
 	} else {
 		fmt.Println(nameField.Name)
-		fmt.Println(nameField.Tag.Get("format"))
+		//fmt.Println(nameField.Tag.Get("format"))
 	}
-	reflect.ValueOf(e).MethodByName("UpdateAge").Call([]reflect.Value{reflect.ValueOf(1)})
+	//reflect.ValueOf(e).MethodByName("UpdateAge").Call([]reflect.Value{reflect.ValueOf(1)})
 	//reflect.ValueOf(e).MethodByName("UpdateAge").Call()
-	fmt.Println(reflect.ValueOf(1))
+	//fmt.Println(reflect.ValueOf(1))
 	/*var f float64 = 12
 	CheckType(f)
 
